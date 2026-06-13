@@ -24,10 +24,10 @@ export function MobileStickyCTA({ onBuy }: Props) {
           <img src={heroImg} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-xs text-muted-foreground line-clamp-1">Nettoyeur Vapeur Pro</div>
+          <div className="text-xs text-muted-foreground line-clamp-1">Nettoyeur Vapeur Pro · Livré 3-7 j</div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-base text-primary-deep">49,90 €</span>
-            <span className="text-xs text-muted-foreground line-through">99,90 €</span>
+            <span className="font-bold text-base text-primary-deep">$69.99</span>
+            <span className="text-xs text-muted-foreground line-through">$139.99</span>
           </div>
         </div>
         <button

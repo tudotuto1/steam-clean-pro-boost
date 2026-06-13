@@ -1,121 +1,118 @@
-import { Star, BadgeCheck, Camera } from "lucide-react";
+import { ShieldCheck, Truck, RotateCcw, Headphones, Lock, Leaf, Package, Clock } from "lucide-react";
 
-const reviews = [
+const promises = [
   {
-    name: "Sophie M.",
-    initial: "S",
-    location: "Lyon",
-    rating: 5,
-    title: "Bluffant sur les joints de salle de bain",
-    text: "Mes joints étaient noirs depuis des années. 10 minutes et ils sont blancs comme neuf. Je n'en reviens pas.",
-    photos: 2,
-    days: 3,
+    icon: Truck,
+    title: "Livraison 3 à 7 jours ouvrables",
+    text: "Expédié partout au Canada et aux USA via nos fournisseurs partenaires. Un numéro de suivi vous est envoyé dès l'expédition.",
   },
   {
-    name: "Karim B.",
-    initial: "K",
-    location: "Paris",
-    rating: 5,
-    title: "Adieu les produits chimiques",
-    text: "On a deux enfants en bas âge, je voulais arrêter la javel. Là on désinfecte tout à la vapeur, c'est top.",
-    photos: 1,
-    days: 7,
+    icon: RotateCcw,
+    title: "30 jours pour l'essayer chez vous",
+    text: "Pas convaincu ? Retournez l'appareil dans les 30 jours et nous vous remboursons intégralement. Sans justification compliquée.",
   },
   {
-    name: "Émilie R.",
-    initial: "É",
-    location: "Bordeaux",
-    rating: 4,
-    title: "La hotte de cuisine sauvée",
-    text: "La graisse cuite partait toute seule sur ma hotte en inox. Livraison rapide en plus.",
-    photos: 3,
-    days: 12,
+    icon: ShieldCheck,
+    title: "Garantie 2 ans constructeur",
+    text: "En cas de défaut, l'appareil est remplacé. Vous achetez l'esprit tranquille, pas un produit jetable.",
   },
   {
-    name: "Antoine D.",
-    initial: "A",
-    location: "Marseille",
-    rating: 5,
-    title: "Parfait pour la voiture",
-    text: "J'ai nettoyé mes sièges en tissu et les jantes. Résultat pro sans aller au lavage auto.",
-    photos: 2,
-    days: 15,
+    icon: Lock,
+    title: "Paiement 100% sécurisé",
+    text: "Chiffrement SSL et passerelle de paiement reconnue. Carte de crédit, Apple Pay, Google Pay et PayPal acceptés.",
   },
   {
-    name: "Nadia C.",
-    initial: "N",
-    location: "Toulouse",
-    rating: 5,
-    title: "Rapide à chauffer",
-    text: "Moins de 3 minutes pour être prêt. Très maniable, même pour les surfaces verticales.",
-    photos: 0,
-    days: 21,
+    icon: Headphones,
+    title: "Support humain, en français",
+    text: "Une question avant ou après l'achat ? Notre équipe répond par courriel sous 24 h ouvrables.",
   },
   {
-    name: "Julien P.",
-    initial: "J",
-    location: "Nantes",
-    rating: 5,
-    title: "Le SAV est au top",
-    text: "Petite question avant achat, réponse en 1h. Le produit est à la hauteur, je recommande.",
-    photos: 1,
-    days: 28,
+    icon: Leaf,
+    title: "Honnête sur ce que ça fait",
+    text: "La vapeur à 132°C dégraisse, ravive les joints et assainit. Ce n'est pas magique : on vous explique exactement comment l'utiliser.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Quand vais-je recevoir ma commande ?",
+    a: "Votre commande est préparée sous 24 à 48 h, puis expédiée par nos fournisseurs partenaires. Comptez 3 à 7 jours ouvrables pour la livraison au Canada et aux USA. Vous recevez un numéro de suivi par courriel dès l'envoi.",
+  },
+  {
+    q: "Combien coûte la livraison ?",
+    a: "La livraison standard est offerte pour toute commande supérieure à $80. En dessous, des frais fixes sont calculés au moment du paiement selon votre adresse.",
+  },
+  {
+    q: "Est-ce vraiment efficace sans produits chimiques ?",
+    a: "Oui. La vapeur sèche à 132°C dissout la graisse cuite, ramollit le calcaire et neutralise les bactéries et acariens sur la majorité des surfaces. Vous n'avez besoin que d'eau du robinet.",
+  },
+  {
+    q: "Sur quoi puis-je l'utiliser ?",
+    a: "Plaques de cuisson, hotte, joints de carrelage, robinetterie, sièges et tapis de voiture, jantes, canapés en tissu, matelas, vitres. Évitez le cuir non traité, le bois brut et les écrans.",
+  },
+  {
+    q: "Et si je ne suis pas satisfait ?",
+    a: "Vous avez 30 jours après réception pour nous écrire et obtenir un remboursement complet. Aucun piège.",
   },
 ];
 
 export function Reviews() {
   return (
-    <section id="avis" className="py-16 sm:py-24 bg-gradient-soft">
+    <section id="confiance" className="py-16 sm:py-24 bg-gradient-soft">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold tracking-widest text-primary uppercase">Avis Vérifiés</span>
+          <span className="text-xs font-bold tracking-widest text-primary uppercase">Nos Engagements</span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-balance">
-            1 420+ clients ont déjà transformé leur quotidien
+            Acheter en ligne mérite de la transparence
           </h2>
-          <div className="mt-4 inline-flex items-center gap-3 bg-card border border-border rounded-full px-5 py-2 shadow-soft">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-warning text-warning" />
-              ))}
-            </div>
-            <span className="font-bold">4,8</span>
-            <span className="text-sm text-muted-foreground">/ 5 — 1 420 avis</span>
-          </div>
+          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+            Voici exactement ce que vous obtenez en commandant aujourd'hui. Pas de faux compteurs, pas de fausses promesses.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {reviews.map((r) => (
-            <article key={r.name} className="p-5 rounded-2xl bg-card border border-border hover:shadow-elevated transition-all hover:-translate-y-0.5">
-              <header className="flex items-center gap-3 mb-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-primary grid place-items-center text-primary-foreground font-bold">
-                  {r.initial}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-semibold text-sm truncate">{r.name}</span>
-                    <BadgeCheck className="h-4 w-4 text-primary flex-shrink-0" />
-                  </div>
-                  <span className="text-xs text-muted-foreground">{r.location} · il y a {r.days}j</span>
-                </div>
-              </header>
-              <div className="flex items-center gap-1 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`h-3.5 w-3.5 ${i < r.rating ? "fill-warning text-warning" : "text-border"}`} />
-                ))}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+          {promises.map((p) => (
+            <article key={p.title} className="p-6 rounded-2xl bg-card border border-border hover:shadow-elevated transition-all hover:-translate-y-0.5">
+              <div className="h-11 w-11 rounded-xl bg-gradient-primary grid place-items-center mb-4">
+                <p.icon className="h-5 w-5 text-primary-foreground" />
               </div>
-              <h4 className="font-semibold text-sm mb-1.5">{r.title}</h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">{r.text}</p>
-              {r.photos > 0 && (
-                <div className="flex gap-2 mt-3">
-                  {[...Array(r.photos)].map((_, i) => (
-                    <div key={i} className="h-14 w-14 rounded-lg bg-muted border border-border grid place-items-center text-muted-foreground">
-                      <Camera className="h-4 w-4" />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <h3 className="font-bold text-base mb-1.5">{p.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{p.text}</p>
             </article>
           ))}
+        </div>
+
+        <div className="grid lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2">
+            <span className="text-xs font-bold tracking-widest text-primary uppercase">FAQ</span>
+            <h3 className="mt-3 text-2xl sm:text-3xl font-bold text-balance">
+              Les réponses claires aux questions qu'on nous pose le plus
+            </h3>
+            <div className="mt-6 flex items-center gap-3 p-4 rounded-2xl bg-card border border-border">
+              <Clock className="h-5 w-5 text-primary flex-shrink-0" />
+              <p className="text-sm">
+                <strong>Délai de livraison&nbsp;:</strong> 3 à 7 jours ouvrables au Canada et aux USA, via nos fournisseurs partenaires.
+              </p>
+            </div>
+            <div className="mt-3 flex items-center gap-3 p-4 rounded-2xl bg-card border border-border">
+              <Package className="h-5 w-5 text-primary flex-shrink-0" />
+              <p className="text-sm">
+                <strong>Suivi en temps réel</strong> envoyé par courriel dès que votre colis quitte l'entrepôt.
+              </p>
+            </div>
+          </div>
+
+          <div className="lg:col-span-3 space-y-3">
+            {faqs.map((f) => (
+              <details key={f.q} className="group p-5 rounded-2xl bg-card border border-border open:shadow-soft transition-shadow">
+                <summary className="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
+                  <span>{f.q}</span>
+                  <span className="h-6 w-6 rounded-full bg-muted grid place-items-center text-primary text-lg leading-none transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </div>
     </section>

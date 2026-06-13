@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { X, Plus, Minus, Truck, Lock, Trash2 } from "lucide-react";
+import { X, Plus, Minus, Truck, Lock, Trash2, Package } from "lucide-react";
 import heroImg from "@/assets/steam-cleaner-hero.jpg";
 
 interface Props {
@@ -9,8 +9,8 @@ interface Props {
   setQuantity: (n: number) => void;
 }
 
-const UNIT_PRICE = 49.9;
-const FREE_SHIPPING_THRESHOLD = 60;
+const UNIT_PRICE = 69.99;
+const FREE_SHIPPING_THRESHOLD = 80;
 
 export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
   useEffect(() => {
@@ -47,9 +47,9 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
           <div className="flex items-center gap-2 text-sm font-medium mb-2">
             <Truck className="h-4 w-4 text-primary" />
             {remaining > 0 ? (
-              <span>Plus que <strong>{remaining.toFixed(2)} €</strong> pour la livraison offerte</span>
+              <span>Plus que <strong>${remaining.toFixed(2)}</strong> pour la livraison offerte</span>
             ) : (
-              <span className="text-success font-bold">🎉 Livraison gratuite débloquée !</span>
+              <span className="text-success font-bold">Livraison gratuite débloquée</span>
             )}
           </div>
           <div className="h-2 bg-background rounded-full overflow-hidden">
@@ -57,6 +57,10 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
               className="h-full bg-gradient-primary transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
+          </div>
+          <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+            <Package className="h-3.5 w-3.5" />
+            Livré au Canada & USA en 3 à 7 jours ouvrables (fournisseurs partenaires)
           </div>
         </div>
 
@@ -69,8 +73,8 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold text-sm leading-tight">Nettoyeur Vapeur Haute Pression VaporPro</h4>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="font-bold text-primary-deep">{UNIT_PRICE.toFixed(2)} €</span>
-                  <span className="text-xs text-muted-foreground line-through">99,90 €</span>
+                  <span className="font-bold text-primary-deep">${UNIT_PRICE.toFixed(2)}</span>
+                  <span className="text-xs text-muted-foreground line-through">$139.99</span>
                 </div>
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center border border-border rounded-full">
@@ -98,11 +102,15 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
         <footer className="border-t border-border p-5 space-y-3 bg-card">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Sous-total</span>
-            <span className="font-semibold">{subtotal.toFixed(2)} €</span>
+            <span className="font-semibold">${subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>Taxes</span>
+            <span>calculées au paiement</span>
           </div>
           <div className="flex justify-between text-base font-bold">
             <span>Total</span>
-            <span className="text-primary-deep">{subtotal.toFixed(2)} €</span>
+            <span className="text-primary-deep">${subtotal.toFixed(2)}</span>
           </div>
           <button
             disabled={quantity === 0}
@@ -111,7 +119,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
             <Lock className="h-4 w-4" />
             Passer Commande
           </button>
-          <p className="text-[11px] text-center text-muted-foreground">Paiement 100% sécurisé · CB · PayPal · Apple Pay</p>
+          <p className="text-[11px] text-center text-muted-foreground">Paiement sécurisé · Carte · PayPal · Apple Pay · Google Pay</p>
         </footer>
       </aside>
     </>

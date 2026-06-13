@@ -14,7 +14,7 @@ export function Footer() {
             </span>
           </div>
           <p className="mt-3 text-sm max-w-sm">
-            Le nettoyage haute performance, sans compromis et sans produits chimiques.
+            Le nettoyage haute performance, sans produits chimiques. Expédié au Canada et aux USA en 3 à 7 jours ouvrables via nos fournisseurs partenaires.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-6 text-sm">

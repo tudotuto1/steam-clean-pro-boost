@@ -22,8 +22,8 @@ export function InTheBox() {
             <img src={accessoriesImg} alt="Tous les accessoires inclus" loading="lazy" className="w-full h-full object-cover" />
           </div>
           <div className="absolute -bottom-4 -right-4 sm:bottom-6 sm:right-6 bg-foreground text-background rounded-2xl px-5 py-3 shadow-elevated">
-            <div className="text-xs text-background/70">Valeur totale</div>
-            <div className="font-bold text-lg">+89 € offerts</div>
+            <div className="text-xs text-background/70">Coffret complet</div>
+            <div className="font-bold text-lg">9 accessoires inclus</div>
           </div>
         </div>
 
