@@ -1,8 +1,9 @@
-import { Truck, Tag, ShieldCheck } from "lucide-react";
+import { Truck, Tag, ShieldCheck, Package } from "lucide-react";
 
 const items = [
-  { icon: Truck, text: "Livraison Gratuite en France" },
-  { icon: Tag, text: "-50% Aujourd'hui Seulement" },
+  { icon: Truck, text: "Expédié au Canada & USA" },
+  { icon: Package, text: "Livraison 3 à 7 jours via nos partenaires" },
+  { icon: Tag, text: "-50% pendant le lancement" },
   { icon: ShieldCheck, text: "Garantie Satisfait ou Remboursé 30 Jours" },
 ];
 

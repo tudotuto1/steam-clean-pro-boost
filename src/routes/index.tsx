@@ -14,10 +14,10 @@ import { Footer } from "@/components/landing/Footer";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VaporPro — Nettoyeur Vapeur Haute Pression | -50% Aujourd'hui" },
-      { name: "description", content: "Éliminez 99,9% des bactéries et de la graisse sans produits chimiques. Vapeur 132°C, kit 9 accessoires, livraison gratuite et garantie 30 jours." },
+      { title: "VaporPro — Nettoyeur Vapeur Haute Pression | Canada & USA" },
+      { name: "description", content: "Vapeur sèche à 132°C, coffret 9 accessoires, sans produits chimiques. Livré au Canada et aux USA en 3 à 7 jours via nos fournisseurs partenaires. Garantie 30 jours." },
       { property: "og:title", content: "VaporPro — Nettoyeur Vapeur Haute Pression" },
-      { property: "og:description", content: "Désinfection à 132°C, zéro chimie. -50% aujourd'hui seulement." },
+      { property: "og:description", content: "Dégraisse et assainit à 132°C, zéro chimie. Livraison Canada & USA en 3-7 jours." },
     ],
   }),
   component: Index,
