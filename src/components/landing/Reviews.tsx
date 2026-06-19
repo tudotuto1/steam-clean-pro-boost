@@ -1,20 +1,20 @@
-import { ShieldCheck, Truck, RotateCcw, Headphones, Lock, Leaf, Package, Clock } from "lucide-react";
+import { ShieldCheck, Truck, Headphones, Lock, Leaf, Package, Clock, Tag } from "lucide-react";
 
 const promises = [
   {
     icon: Truck,
-    title: "Livraison 3 à 7 jours ouvrables",
+    title: "Livraison 5 à 8 jours ouvrables",
     text: "Expédié partout au Canada et aux USA via nos fournisseurs partenaires. Un numéro de suivi vous est envoyé dès l'expédition.",
   },
   {
-    icon: RotateCcw,
-    title: "30 jours pour l'essayer chez vous",
-    text: "Pas convaincu ? Retournez l'appareil dans les 30 jours et nous vous remboursons intégralement. Sans justification compliquée.",
+    icon: Tag,
+    title: "Prix tout inclus : $85",
+    text: "Pas de frais cachés. Le prix affiché comprend l'appareil, le coffret de 9 accessoires et la livraison à domicile.",
   },
   {
     icon: ShieldCheck,
     title: "Garantie 2 ans constructeur",
-    text: "En cas de défaut, l'appareil est remplacé. Vous achetez l'esprit tranquille, pas un produit jetable.",
+    text: "En cas de défaut de fabrication, l'appareil est remplacé. Vous achetez l'esprit tranquille, pas un produit jetable.",
   },
   {
     icon: Lock,
@@ -36,11 +36,11 @@ const promises = [
 const faqs = [
   {
     q: "Quand vais-je recevoir ma commande ?",
-    a: "Votre commande est préparée sous 24 à 48 h, puis expédiée par nos fournisseurs partenaires. Comptez 3 à 7 jours ouvrables pour la livraison au Canada et aux USA. Vous recevez un numéro de suivi par courriel dès l'envoi.",
+    a: "Votre commande est préparée sous 24 à 48 h, puis expédiée par nos fournisseurs partenaires. Comptez 5 à 8 jours ouvrables pour la livraison au Canada et aux USA. Vous recevez un numéro de suivi par courriel dès l'expédition.",
   },
   {
     q: "Combien coûte la livraison ?",
-    a: "La livraison standard est offerte pour toute commande supérieure à $80. En dessous, des frais fixes sont calculés au moment du paiement selon votre adresse.",
+    a: "La livraison est incluse dans le prix de $85. Aucun supplément à prévoir au moment du paiement.",
   },
   {
     q: "Est-ce vraiment efficace sans produits chimiques ?",
@@ -51,8 +51,8 @@ const faqs = [
     a: "Plaques de cuisson, hotte, joints de carrelage, robinetterie, sièges et tapis de voiture, jantes, canapés en tissu, matelas, vitres. Évitez le cuir non traité, le bois brut et les écrans.",
   },
   {
-    q: "Et si je ne suis pas satisfait ?",
-    a: "Vous avez 30 jours après réception pour nous écrire et obtenir un remboursement complet. Aucun piège.",
+    q: "L'appareil est-il garanti ?",
+    a: "Oui, garantie constructeur 2 ans contre tout défaut de fabrication. Il suffit de nous contacter avec votre numéro de commande.",
   },
 ];
 
@@ -91,7 +91,7 @@ export function Reviews() {
             <div className="mt-6 flex items-center gap-3 p-4 rounded-2xl bg-card border border-border">
               <Clock className="h-5 w-5 text-primary flex-shrink-0" />
               <p className="text-sm">
-                <strong>Délai de livraison&nbsp;:</strong> 3 à 7 jours ouvrables au Canada et aux USA, via nos fournisseurs partenaires.
+                <strong>Délai de livraison&nbsp;:</strong> 5 à 8 jours ouvrables au Canada et aux USA, via nos fournisseurs partenaires.
               </p>
             </div>
             <div className="mt-3 flex items-center gap-3 p-4 rounded-2xl bg-card border border-border">
