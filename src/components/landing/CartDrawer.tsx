@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { X, Plus, Minus, Truck, Lock, Trash2, Package } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Plus, Minus, Truck, Lock, Trash2, Package, Loader2 } from "lucide-react";
 import mainImg from "@/assets/product-main.jpeg.asset.json";
 
 interface Props {
@@ -12,12 +12,41 @@ interface Props {
 const UNIT_PRICE = 85;
 
 export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   const subtotal = quantity * UNIT_PRICE;
+
+  const handleCheckout = async () => {
+    if (quantity < 1 || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.url) {
+        throw new Error(data?.error ?? "Le paiement n'a pas pu démarrer.");
+      }
+      window.location.href = data.url;
+    } catch (err) {
+      console.error(err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Le paiement n'a pas pu démarrer. Réessayez.",
+      );
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -99,12 +128,22 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
             <span>Total</span>
             <span className="text-primary-deep">${subtotal}</span>
           </div>
+          {error && (
+            <p className="text-[11px] text-center text-destructive" role="alert">
+              {error}
+            </p>
+          )}
           <button
-            disabled={quantity === 0}
+            onClick={handleCheckout}
+            disabled={quantity === 0 || loading}
             className="w-full h-12 rounded-xl bg-gradient-primary text-primary-foreground font-bold shadow-cta disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01] transition-transform flex items-center justify-center gap-2"
           >
-            <Lock className="h-4 w-4" />
-            Passer Commande
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Lock className="h-4 w-4" />
+            )}
+            {loading ? "Redirection..." : "Passer Commande"}
           </button>
           <p className="text-[11px] text-center text-muted-foreground">Paiement sécurisé · Carte · PayPal · Apple Pay · Google Pay</p>
         </footer>
