@@ -1,12 +1,12 @@
 import { useState } from "react";
-import heroImg from "@/assets/steam-cleaner-hero.jpg";
-import kitchenImg from "@/assets/steam-kitchen.jpg";
-import accessoriesImg from "@/assets/steam-accessories.jpg";
+import mainImg from "@/assets/product-main.jpeg.asset.json";
+import usesImg from "@/assets/product-uses.jpeg.asset.json";
+import featuresImg from "@/assets/product-features.jpeg.asset.json";
 
 const images = [
-  { src: heroImg, alt: "Nettoyeur vapeur haute pression" },
-  { src: kitchenImg, alt: "Nettoyage cuisine à la vapeur" },
-  { src: accessoriesImg, alt: "Kit d'accessoires inclus" },
+  { src: mainImg.url, alt: "Nettoyeur vapeur haute pression et ses 9 accessoires" },
+  { src: usesImg.url, alt: "Surfaces compatibles : vitres, meubles, cuisine, sanitaires, pneus, textiles" },
+  { src: featuresImg.url, alt: "Caractéristiques techniques de l'appareil" },
 ];
 
 export function HeroGallery() {
@@ -14,16 +14,11 @@ export function HeroGallery() {
   return (
     <div className="flex flex-col gap-3">
       <div className="relative aspect-square rounded-3xl bg-gradient-soft overflow-hidden shadow-elevated border border-border/60">
-        <div className="absolute top-4 left-4 z-10 bg-destructive text-destructive-foreground px-3 py-1.5 rounded-full text-xs font-bold tracking-wide">
-          -50% AUJOURD'HUI
-        </div>
         <img
           key={active}
           src={images[active].src}
           alt={images[active].alt}
-          width={1024}
-          height={1024}
-          className="w-full h-full object-cover animate-float-in"
+          className="w-full h-full object-contain p-4 animate-float-in"
         />
       </div>
       <div className="grid grid-cols-3 gap-3">
@@ -32,11 +27,11 @@ export function HeroGallery() {
             key={i}
             onClick={() => setActive(i)}
             aria-label={`Voir image ${i + 1}`}
-            className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${
+            className={`aspect-square rounded-xl overflow-hidden border-2 bg-gradient-soft transition-all ${
               active === i ? "border-primary shadow-soft scale-[0.98]" : "border-border opacity-70 hover:opacity-100"
             }`}
           >
-            <img src={img.src} alt={img.alt} loading="lazy" className="w-full h-full object-cover" />
+            <img src={img.src} alt={img.alt} loading="lazy" className="w-full h-full object-contain p-1" />
           </button>
         ))}
       </div>

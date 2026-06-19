@@ -2,9 +2,9 @@ import { Truck, Tag, ShieldCheck, Package } from "lucide-react";
 
 const items = [
   { icon: Truck, text: "Expédié au Canada & USA" },
-  { icon: Package, text: "Livraison 3 à 7 jours via nos partenaires" },
-  { icon: Tag, text: "-50% pendant le lancement" },
-  { icon: ShieldCheck, text: "Garantie Satisfait ou Remboursé 30 Jours" },
+  { icon: Package, text: "Livraison 5 à 8 jours via nos partenaires" },
+  { icon: Tag, text: "Prix tout inclus : $85 livraison comprise" },
+  { icon: ShieldCheck, text: "Garantie 2 ans constructeur" },
 ];
 
 export function AnnouncementBar() {

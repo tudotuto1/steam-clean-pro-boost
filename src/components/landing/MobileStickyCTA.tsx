@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import heroImg from "@/assets/steam-cleaner-hero.jpg";
+import mainImg from "@/assets/product-main.jpeg.asset.json";
 
 interface Props {
   onBuy: () => void;
@@ -21,13 +21,13 @@ export function MobileStickyCTA({ onBuy }: Props) {
     <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 p-3 bg-background/95 backdrop-blur-xl border-t border-border shadow-elevated animate-slide-up">
       <div className="flex items-center gap-3">
         <div className="h-12 w-12 rounded-xl bg-gradient-soft border border-border overflow-hidden flex-shrink-0">
-          <img src={heroImg} alt="" className="w-full h-full object-cover" />
+          <img src={mainImg.url} alt="" className="w-full h-full object-contain p-0.5" />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-xs text-muted-foreground line-clamp-1">Nettoyeur Vapeur Pro · Livré 3-7 j</div>
+          <div className="text-xs text-muted-foreground line-clamp-1">Nettoyeur Vapeur Pro · Livré 5-8 j</div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-base text-primary-deep">$69.99</span>
-            <span className="text-xs text-muted-foreground line-through">$139.99</span>
+            <span className="font-bold text-base text-primary-deep">$85</span>
+            <span className="text-[10px] text-success font-semibold">Livraison incluse</span>
           </div>
         </div>
         <button

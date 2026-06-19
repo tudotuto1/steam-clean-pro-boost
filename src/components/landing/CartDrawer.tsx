@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { X, Plus, Minus, Truck, Lock, Trash2, Package } from "lucide-react";
-import heroImg from "@/assets/steam-cleaner-hero.jpg";
+import mainImg from "@/assets/product-main.jpeg.asset.json";
 
 interface Props {
   open: boolean;
@@ -9,8 +9,7 @@ interface Props {
   setQuantity: (n: number) => void;
 }
 
-const UNIT_PRICE = 69.99;
-const FREE_SHIPPING_THRESHOLD = 80;
+const UNIT_PRICE = 85;
 
 export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
   useEffect(() => {
@@ -19,8 +18,6 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
   }, [open]);
 
   const subtotal = quantity * UNIT_PRICE;
-  const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   return (
     <>
@@ -44,23 +41,13 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
         </header>
 
         <div className="px-5 py-4 bg-accent/40 border-b border-border">
-          <div className="flex items-center gap-2 text-sm font-medium mb-2">
+          <div className="flex items-center gap-2 text-sm font-medium mb-1">
             <Truck className="h-4 w-4 text-primary" />
-            {remaining > 0 ? (
-              <span>Plus que <strong>${remaining.toFixed(2)}</strong> pour la livraison offerte</span>
-            ) : (
-              <span className="text-success font-bold">Livraison gratuite débloquée</span>
-            )}
+            <span className="text-success font-bold">Livraison incluse dans le prix</span>
           </div>
-          <div className="h-2 bg-background rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-primary transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
             <Package className="h-3.5 w-3.5" />
-            Livré au Canada & USA en 3 à 7 jours ouvrables (fournisseurs partenaires)
+            Livré au Canada & USA en 5 à 8 jours ouvrables (fournisseurs partenaires)
           </div>
         </div>
 
@@ -68,13 +55,13 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
           {quantity > 0 ? (
             <div className="flex gap-4 p-3 rounded-2xl border border-border">
               <div className="h-20 w-20 rounded-xl bg-gradient-soft overflow-hidden flex-shrink-0">
-                <img src={heroImg} alt="" className="w-full h-full object-cover" />
+                <img src={mainImg.url} alt="" className="w-full h-full object-contain p-1" />
               </div>
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold text-sm leading-tight">Nettoyeur Vapeur Haute Pression VaporPro</h4>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="font-bold text-primary-deep">${UNIT_PRICE.toFixed(2)}</span>
-                  <span className="text-xs text-muted-foreground line-through">$139.99</span>
+                  <span className="font-bold text-primary-deep">${UNIT_PRICE}</span>
+                  <span className="text-[10px] text-success font-semibold">Tout inclus</span>
                 </div>
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center border border-border rounded-full">
@@ -102,15 +89,15 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
         <footer className="border-t border-border p-5 space-y-3 bg-card">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Sous-total</span>
-            <span className="font-semibold">${subtotal.toFixed(2)}</span>
+            <span className="font-semibold">${subtotal}</span>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>Taxes</span>
-            <span>calculées au paiement</span>
+            <span>Livraison</span>
+            <span className="text-success font-semibold">Incluse</span>
           </div>
           <div className="flex justify-between text-base font-bold">
             <span>Total</span>
-            <span className="text-primary-deep">${subtotal.toFixed(2)}</span>
+            <span className="text-primary-deep">${subtotal}</span>
           </div>
           <button
             disabled={quantity === 0}
