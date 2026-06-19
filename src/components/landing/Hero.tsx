@@ -1,4 +1,4 @@
-import { ShieldCheck, Lock, RotateCcw, Plus, Truck, Leaf, Zap } from "lucide-react";
+import { ShieldCheck, Lock, Plus, Truck, Leaf, Zap } from "lucide-react";
 import { HeroGallery } from "./HeroGallery";
 
 interface HeroProps {
@@ -33,7 +33,7 @@ export function Hero({ onAddToCart }: HeroProps) {
             {[
               { icon: Zap, text: "Vapeur 132°C" },
               { icon: Leaf, text: "Zéro chimie" },
-              { icon: Truck, text: "Livré en 3-7 jours" },
+              { icon: Truck, text: "Livré en 5-8 jours" },
             ].map((b) => (
               <div key={b.text} className="flex items-center gap-1.5 p-2 rounded-lg bg-card border border-border/60">
                 <b.icon className="h-4 w-4 text-primary flex-shrink-0" />
@@ -43,24 +43,23 @@ export function Hero({ onAddToCart }: HeroProps) {
           </div>
 
           <div className="flex items-baseline gap-3 pt-1">
-            <span className="text-4xl font-extrabold font-display text-primary-deep">$69.99</span>
-            <span className="text-xl text-muted-foreground line-through">$139.99</span>
-            <span className="bg-destructive/10 text-destructive font-bold text-xs px-2 py-1 rounded">-50%</span>
+            <span className="text-4xl font-extrabold font-display text-primary-deep">$85</span>
+            <span className="bg-success/10 text-success font-bold text-xs px-2 py-1 rounded">LIVRAISON INCLUSE</span>
           </div>
-          <p className="text-xs text-muted-foreground -mt-2">Prix de lancement · CAD / USD · taxes calculées au paiement</p>
+          <p className="text-xs text-muted-foreground -mt-2">Tout inclus · Livraison Canada & USA offerte</p>
 
           <button
             onClick={onAddToCart}
             className="group relative w-full h-14 rounded-2xl bg-gradient-primary text-primary-foreground font-bold text-base shadow-cta animate-pulse-cta hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-center justify-center gap-2"
           >
             <Plus className="h-5 w-5 transition-transform group-hover:rotate-90" />
-            Ajouter au Panier — $69.99
+            Ajouter au Panier — $85
           </button>
 
           <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] sm:text-xs">
             {[
               { icon: Lock, text: "Paiement Sécurisé" },
-              { icon: RotateCcw, text: "30 Jours Satisfait" },
+              { icon: Truck, text: "Livraison Incluse" },
               { icon: ShieldCheck, text: "Garantie 2 Ans" },
             ].map((b) => (
               <div key={b.text} className="flex flex-col items-center text-center gap-1 p-2 rounded-lg bg-card border border-border/60">
