@@ -7,6 +7,7 @@ import { BeforeAfter } from "@/components/landing/BeforeAfter";
 import { Features } from "@/components/landing/Features";
 import { InTheBox } from "@/components/landing/InTheBox";
 import { Reviews } from "@/components/landing/Reviews";
+import { ReviewsSection } from "@/components/reviews/ReviewsSection";
 import { MobileStickyCTA } from "@/components/landing/MobileStickyCTA";
 import { CartDrawer } from "@/components/landing/CartDrawer";
 import { Footer } from "@/components/landing/Footer";
@@ -41,6 +42,7 @@ function Index() {
         <BeforeAfter />
         <Features />
         <InTheBox />
+        <ReviewsSection />
         <Reviews />
       </main>
       <Footer />
