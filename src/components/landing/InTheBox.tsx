@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import accessoriesImg from "@/assets/product-main.jpeg.asset.json";
+import accessoriesImg from "@/assets/product-main.jpeg";
 
 const items = [
   "Appareil principal vapeur",
@@ -19,7 +19,7 @@ export function InTheBox() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <div className="relative">
           <div className="aspect-square rounded-3xl overflow-hidden bg-gradient-soft border border-border shadow-elevated">
-            <img src={accessoriesImg.url} alt="Tous les accessoires inclus" loading="lazy" className="w-full h-full object-contain p-4" />
+            <img src={accessoriesImg} alt="Tous les accessoires inclus" loading="lazy" className="w-full h-full object-contain p-4" />
           </div>
           <div className="absolute -bottom-4 -right-4 sm:bottom-6 sm:right-6 bg-foreground text-background rounded-2xl px-5 py-3 shadow-elevated">
             <div className="text-xs text-background/70">Coffret complet</div>

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import mainImg from "@/assets/product-main.jpeg.asset.json";
-import usesImg from "@/assets/product-uses.jpeg.asset.json";
-import featuresImg from "@/assets/product-features.jpeg.asset.json";
+import mainImg from "@/assets/product-main.jpeg";
+import usesImg from "@/assets/product-uses.jpeg";
+import featuresImg from "@/assets/product-features.jpeg";
 
 const images = [
-  { src: mainImg.url, alt: "Nettoyeur vapeur haute pression et ses 9 accessoires" },
-  { src: usesImg.url, alt: "Surfaces compatibles : vitres, meubles, cuisine, sanitaires, pneus, textiles" },
-  { src: featuresImg.url, alt: "Caractéristiques techniques de l'appareil" },
+  { src: mainImg, alt: "Nettoyeur vapeur haute pression et ses 9 accessoires" },
+  { src: usesImg, alt: "Surfaces compatibles : vitres, meubles, cuisine, sanitaires, pneus, textiles" },
+  { src: featuresImg, alt: "Caractéristiques techniques de l'appareil" },
 ];
 
 export function HeroGallery() {

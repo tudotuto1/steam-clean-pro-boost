@@ -1,4 +1,4 @@
-import usesImg from "@/assets/product-uses.jpeg.asset.json";
+import usesImg from "@/assets/product-uses.jpeg";
 
 const surfaces = [
   "Fenêtres & vitres",
@@ -22,7 +22,7 @@ export function BeforeAfter() {
         </div>
 
         <div className="rounded-3xl overflow-hidden border border-border shadow-elevated bg-gradient-soft">
-          <img src={usesImg.url} alt="Surfaces compatibles avec le nettoyeur vapeur" loading="lazy" className="w-full h-auto" />
+          <img src={usesImg} alt="Surfaces compatibles avec le nettoyeur vapeur" loading="lazy" className="w-full h-auto" />
         </div>
 
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-2">

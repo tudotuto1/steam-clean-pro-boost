@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { X, Plus, Minus, Truck, Lock, Trash2, Package, Loader2 } from "lucide-react";
-import mainImg from "@/assets/product-main.jpeg.asset.json";
+import mainImg from "@/assets/product-main.jpeg";
 
 interface Props {
   open: boolean;
@@ -84,7 +84,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
           {quantity > 0 ? (
             <div className="flex gap-4 p-3 rounded-2xl border border-border">
               <div className="h-20 w-20 rounded-xl bg-gradient-soft overflow-hidden flex-shrink-0">
-                <img src={mainImg.url} alt="" className="w-full h-full object-contain p-1" />
+                <img src={mainImg} alt="" className="w-full h-full object-contain p-1" />
               </div>
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold text-sm leading-tight">Nettoyeur Vapeur Haute Pression VaporPro</h4>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import mainImg from "@/assets/product-main.jpeg.asset.json";
+import mainImg from "@/assets/product-main.jpeg";
 
 interface Props {
   onBuy: () => void;
@@ -21,7 +21,7 @@ export function MobileStickyCTA({ onBuy }: Props) {
     <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 p-3 bg-background/95 backdrop-blur-xl border-t border-border shadow-elevated animate-slide-up">
       <div className="flex items-center gap-3">
         <div className="h-12 w-12 rounded-xl bg-gradient-soft border border-border overflow-hidden flex-shrink-0">
-          <img src={mainImg.url} alt="" className="w-full h-full object-contain p-0.5" />
+          <img src={mainImg} alt="" className="w-full h-full object-contain p-0.5" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-xs text-muted-foreground line-clamp-1">Nettoyeur Vapeur Pro · Livré 5-8 j</div>
