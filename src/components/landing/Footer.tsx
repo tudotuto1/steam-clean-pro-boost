@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
@@ -21,17 +22,17 @@ export function Footer() {
           <div>
             <h5 className="font-semibold text-background mb-3">Aide</h5>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-background">Suivi de commande</a></li>
-              <li><a href="#" className="hover:text-background">Garantie 2 ans</a></li>
-              <li><a href="#" className="hover:text-background">Contact</a></li>
+              <li><Link to="/mes-commandes" className="hover:text-background">Suivi de commande</Link></li>
+              <li><Link to="/garantie" className="hover:text-background">Garantie 2 ans</Link></li>
+              <li><Link to="/contact" className="hover:text-background">Contact</Link></li>
             </ul>
           </div>
           <div>
             <h5 className="font-semibold text-background mb-3">Légal</h5>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-background">CGV</a></li>
-              <li><a href="#" className="hover:text-background">Confidentialité</a></li>
-              <li><a href="#" className="hover:text-background">Mentions</a></li>
+              <li><Link to="/cgv" className="hover:text-background">CGV</Link></li>
+              <li><Link to="/confidentialite" className="hover:text-background">Confidentialité</Link></li>
+              <li><Link to="/mentions" className="hover:text-background">Mentions</Link></li>
             </ul>
           </div>
         </div>

@@ -11,6 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MesCommandesRouteImport } from './routes/mes-commandes'
 import { Route as MerciRouteImport } from './routes/merci'
+import { Route as MentionsRouteImport } from './routes/mentions'
+import { Route as GarantieRouteImport } from './routes/garantie'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
+import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 
@@ -22,6 +27,31 @@ const MesCommandesRoute = MesCommandesRouteImport.update({
 const MerciRoute = MerciRouteImport.update({
   id: '/merci',
   path: '/merci',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsRoute = MentionsRouteImport.update({
+  id: '/mentions',
+  path: '/mentions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GarantieRoute = GarantieRouteImport.update({
+  id: '/garantie',
+  path: '/garantie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
+  id: '/confidentialite',
+  path: '/confidentialite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CgvRoute = CgvRouteImport.update({
+  id: '/cgv',
+  path: '/cgv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,12 +67,22 @@ const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cgv': typeof CgvRoute
+  '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
+  '/garantie': typeof GarantieRoute
+  '/mentions': typeof MentionsRoute
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cgv': typeof CgvRoute
+  '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
+  '/garantie': typeof GarantieRoute
+  '/mentions': typeof MentionsRoute
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
@@ -50,20 +90,58 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cgv': typeof CgvRoute
+  '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
+  '/garantie': typeof GarantieRoute
+  '/mentions': typeof MentionsRoute
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/merci' | '/mes-commandes' | '/api/checkout'
+  fullPaths:
+    | '/'
+    | '/cgv'
+    | '/confidentialite'
+    | '/contact'
+    | '/garantie'
+    | '/mentions'
+    | '/merci'
+    | '/mes-commandes'
+    | '/api/checkout'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/merci' | '/mes-commandes' | '/api/checkout'
-  id: '__root__' | '/' | '/merci' | '/mes-commandes' | '/api/checkout'
+  to:
+    | '/'
+    | '/cgv'
+    | '/confidentialite'
+    | '/contact'
+    | '/garantie'
+    | '/mentions'
+    | '/merci'
+    | '/mes-commandes'
+    | '/api/checkout'
+  id:
+    | '__root__'
+    | '/'
+    | '/cgv'
+    | '/confidentialite'
+    | '/contact'
+    | '/garantie'
+    | '/mentions'
+    | '/merci'
+    | '/mes-commandes'
+    | '/api/checkout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CgvRoute: typeof CgvRoute
+  ConfidentialiteRoute: typeof ConfidentialiteRoute
+  ContactRoute: typeof ContactRoute
+  GarantieRoute: typeof GarantieRoute
+  MentionsRoute: typeof MentionsRoute
   MerciRoute: typeof MerciRoute
   MesCommandesRoute: typeof MesCommandesRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
@@ -85,6 +163,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MerciRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mentions': {
+      id: '/mentions'
+      path: '/mentions'
+      fullPath: '/mentions'
+      preLoaderRoute: typeof MentionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/garantie': {
+      id: '/garantie'
+      path: '/garantie'
+      fullPath: '/garantie'
+      preLoaderRoute: typeof GarantieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confidentialite': {
+      id: '/confidentialite'
+      path: '/confidentialite'
+      fullPath: '/confidentialite'
+      preLoaderRoute: typeof ConfidentialiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cgv': {
+      id: '/cgv'
+      path: '/cgv'
+      fullPath: '/cgv'
+      preLoaderRoute: typeof CgvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +217,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CgvRoute: CgvRoute,
+  ConfidentialiteRoute: ConfidentialiteRoute,
+  ContactRoute: ContactRoute,
+  GarantieRoute: GarantieRoute,
+  MentionsRoute: MentionsRoute,
   MerciRoute: MerciRoute,
   MesCommandesRoute: MesCommandesRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,
