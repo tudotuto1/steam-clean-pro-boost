@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createClient } from "@supabase/supabase-js";
 import process from "node:process";
 
 // Server route: POST /api/checkout
@@ -35,6 +36,43 @@ export const Route = createFileRoute("/api/checkout")({
           );
         }
 
+        // Vérifie l'identité côté serveur : on ne fait jamais confiance au
+        // client. Le vrai user_id/email vient du token validé par Supabase.
+        const authHeader = request.headers.get("authorization") ?? "";
+        const token = authHeader.toLowerCase().startsWith("bearer ")
+          ? authHeader.slice(7).trim()
+          : "";
+        if (!token) {
+          return Response.json(
+            { error: "Connexion requise." },
+            { status: 401 },
+          );
+        }
+
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+        const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+        if (!supabaseUrl || !supabaseAnonKey) {
+          console.error("VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY missing");
+          return Response.json(
+            { error: "L'authentification n'est pas configurée." },
+            { status: 500 },
+          );
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser(token);
+        if (userError || !userData.user) {
+          return Response.json(
+            { error: "Session invalide. Reconnectez-vous." },
+            { status: 401 },
+          );
+        }
+        const userId = userData.user.id;
+        const userEmail = userData.user.email;
+
         // Lis la quantité depuis le client.
         let quantity = 0;
         try {
@@ -70,6 +108,14 @@ export const Route = createFileRoute("/api/checkout")({
           `${origin}/merci?session_id={CHECKOUT_SESSION_ID}`,
         );
         params.set("cancel_url", `${origin}/`);
+
+        // Lie la session de paiement à l'utilisateur authentifié (valeurs
+        // issues du token vérifié, jamais du client).
+        params.set("client_reference_id", userId);
+        params.set("metadata[user_id]", userId);
+        if (userEmail) {
+          params.set("customer_email", userEmail);
+        }
 
         const stripeRes = await fetch(
           "https://api.stripe.com/v1/checkout/sessions",

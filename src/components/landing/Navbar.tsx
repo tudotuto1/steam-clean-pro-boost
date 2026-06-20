@@ -1,4 +1,6 @@
-import { ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Sparkles, LogOut, User } from "lucide-react";
+
+import { useAuth } from "@/lib/auth";
 
 interface NavbarProps {
   cartCount: number;
@@ -6,6 +8,8 @@ interface NavbarProps {
 }
 
 export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
+  const { user, loading, openAuthDialog, signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl border-b border-border/60">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
@@ -25,18 +29,45 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
           <a href="#avis" className="hover:text-foreground transition-colors">Avis</a>
         </nav>
 
-        <button
-          onClick={onCartOpen}
-          aria-label="Ouvrir le panier"
-          className="relative h-10 w-10 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all"
-        >
-          <ShoppingBag className="h-4 w-4" />
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 grid place-items-center rounded-full bg-primary text-primary-foreground text-[10px] font-bold animate-float-in">
-              {cartCount}
-            </span>
-          )}
-        </button>
+        <div className="flex items-center gap-2">
+          {!loading &&
+            (user ? (
+              <div className="flex items-center gap-2">
+                <span className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground max-w-[180px] truncate">
+                  <User className="h-3.5 w-3.5 flex-shrink-0" />
+                  <span className="truncate">{user.email}</span>
+                </span>
+                <button
+                  onClick={() => void signOut()}
+                  aria-label="Se déconnecter"
+                  className="h-10 px-3 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium"
+                >
+                  <LogOut className="h-4 w-4 sm:hidden" />
+                  <span className="hidden sm:inline">Déconnexion</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={openAuthDialog}
+                className="h-10 px-4 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-sm font-medium"
+              >
+                Se connecter
+              </button>
+            ))}
+
+          <button
+            onClick={onCartOpen}
+            aria-label="Ouvrir le panier"
+            className="relative h-10 w-10 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 grid place-items-center rounded-full bg-primary text-primary-foreground text-[10px] font-bold animate-float-in">
+                {cartCount}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
     </header>
   );

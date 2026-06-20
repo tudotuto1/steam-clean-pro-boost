@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Plus, Minus, Truck, Lock, Trash2, Package, Loader2 } from "lucide-react";
 import mainImg from "@/assets/product-main.jpeg";
+import { useAuth } from "@/lib/auth";
 
 interface Props {
   open: boolean;
@@ -14,6 +15,7 @@ const UNIT_PRICE = 85;
 export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { session, openAuthDialog } = useAuth();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -24,12 +26,25 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
 
   const handleCheckout = async () => {
     if (quantity < 1 || loading) return;
+
+    // Require authentication before paying: open the auth modal instead of
+    // starting checkout when there is no session.
+    if (!session) {
+      setError(null);
+      onClose();
+      openAuthDialog();
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({ quantity }),
       });
       const data = await res.json().catch(() => ({}));
