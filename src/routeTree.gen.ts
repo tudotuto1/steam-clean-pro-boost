@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MesCommandesRouteImport } from './routes/mes-commandes'
 import { Route as MerciRouteImport } from './routes/merci'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 
+const MesCommandesRoute = MesCommandesRouteImport.update({
+  id: '/mes-commandes',
+  path: '/mes-commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MerciRoute = MerciRouteImport.update({
   id: '/merci',
   path: '/merci',
@@ -32,35 +38,46 @@ const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/merci': typeof MerciRoute
+  '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/merci': typeof MerciRoute
+  '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/merci': typeof MerciRoute
+  '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/merci' | '/api/checkout'
+  fullPaths: '/' | '/merci' | '/mes-commandes' | '/api/checkout'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/merci' | '/api/checkout'
-  id: '__root__' | '/' | '/merci' | '/api/checkout'
+  to: '/' | '/merci' | '/mes-commandes' | '/api/checkout'
+  id: '__root__' | '/' | '/merci' | '/mes-commandes' | '/api/checkout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MerciRoute: typeof MerciRoute
+  MesCommandesRoute: typeof MesCommandesRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mes-commandes': {
+      id: '/mes-commandes'
+      path: '/mes-commandes'
+      fullPath: '/mes-commandes'
+      preLoaderRoute: typeof MesCommandesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/merci': {
       id: '/merci'
       path: '/merci'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MerciRoute: MerciRoute,
+  MesCommandesRoute: MesCommandesRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,
 }
 export const routeTree = rootRouteImport

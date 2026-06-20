@@ -1,6 +1,15 @@
-import { ShoppingBag, Sparkles, LogOut, User } from "lucide-react";
+import { ShoppingBag, Sparkles, LogOut, User, Package, ChevronDown } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 import { useAuth } from "@/lib/auth";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface NavbarProps {
   cartCount: number;
@@ -32,20 +41,29 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
         <div className="flex items-center gap-2">
           {!loading &&
             (user ? (
-              <div className="flex items-center gap-2">
-                <span className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground max-w-[180px] truncate">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="h-10 px-3 flex items-center gap-1.5 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                   <User className="h-3.5 w-3.5 flex-shrink-0" />
-                  <span className="truncate">{user.email}</span>
-                </span>
-                <button
-                  onClick={() => void signOut()}
-                  aria-label="Se déconnecter"
-                  className="h-10 px-3 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium"
-                >
-                  <LogOut className="h-4 w-4 sm:hidden" />
-                  <span className="hidden sm:inline">Déconnexion</span>
-                </button>
-              </div>
+                  <span className="hidden sm:inline max-w-[160px] truncate">{user.email}</span>
+                  <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="truncate font-normal text-muted-foreground sm:hidden">
+                    {user.email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuItem asChild>
+                    <Link to="/mes-commandes" className="cursor-pointer">
+                      <Package className="h-4 w-4" />
+                      Mes commandes
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer">
+                    <LogOut className="h-4 w-4" />
+                    Déconnexion
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <button
                 onClick={openAuthDialog}
