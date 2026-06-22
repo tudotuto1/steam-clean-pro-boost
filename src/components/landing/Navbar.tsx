@@ -41,29 +41,39 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
         <div className="flex items-center gap-2">
           {!loading &&
             (user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="h-10 px-3 flex items-center gap-1.5 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <User className="h-3.5 w-3.5 flex-shrink-0" />
-                  <span className="hidden sm:inline max-w-[160px] truncate">{user.email}</span>
-                  <ChevronDown className="h-3.5 w-3.5 opacity-60" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel className="truncate font-normal text-muted-foreground sm:hidden">
-                    {user.email}
-                  </DropdownMenuLabel>
-                  <DropdownMenuItem asChild>
-                    <Link to="/mes-commandes" className="cursor-pointer">
-                      <Package className="h-4 w-4" />
-                      Mes commandes
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer">
-                    <LogOut className="h-4 w-4" />
-                    Déconnexion
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <>
+                <Link
+                  to="/mes-commandes"
+                  className="hidden sm:flex items-center gap-1.5 h-10 px-3 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium"
+                >
+                  <Package className="h-3.5 w-3.5" />
+                  Mes commandes
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="h-10 px-3 flex items-center gap-1.5 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <User className="h-3.5 w-3.5 flex-shrink-0" />
+                    <span className="hidden sm:inline max-w-[160px] truncate">{user.email}</span>
+                    <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+                      {user.email}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/mes-commandes" className="cursor-pointer">
+                        <Package className="h-4 w-4" />
+                        Mes commandes
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer">
+                      <LogOut className="h-4 w-4" />
+                      Déconnexion
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
             ) : (
               <button
                 onClick={openAuthDialog}

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, Package, Truck } from "lucide-react";
+import { CheckCircle2, Package, Truck, Star } from "lucide-react";
 
 export const Route = createFileRoute("/merci")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -50,6 +50,29 @@ function MerciPage() {
             Référence : {session_id}
           </p>
         ) : null}
+
+        <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-left">
+          <div className="flex items-center gap-2">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            <h2 className="font-semibold text-foreground">
+              Partagez votre expérience
+            </h2>
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Dès que vous aurez reçu et testé votre VaporPro, laissez un avis pour
+            aider les autres clients.
+          </p>
+          <div className="mt-4">
+            <Link
+              to="/"
+              hash="avis"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-5 h-11 text-sm font-semibold hover:border-primary hover:bg-accent transition-colors"
+            >
+              <Star className="h-4 w-4" />
+              Laisser un avis
+            </Link>
+          </div>
+        </div>
 
         <div className="mt-8">
           <Link
