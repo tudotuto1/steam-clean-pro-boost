@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe-webhook'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 
 const MesCommandesRoute = MesCommandesRouteImport.update({
@@ -59,6 +60,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe-webhook',
+  path: '/api/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
   id: '/api/checkout',
   path: '/api/checkout',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/mes-commandes'
     | '/api/checkout'
+    | '/api/stripe-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/mes-commandes'
     | '/api/checkout'
+    | '/api/stripe-webhook'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/mes-commandes'
     | '/api/checkout'
+    | '/api/stripe-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +157,7 @@ export interface RootRouteChildren {
   MerciRoute: typeof MerciRoute
   MesCommandesRoute: typeof MesCommandesRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe-webhook': {
+      id: '/api/stripe-webhook'
+      path: '/api/stripe-webhook'
+      fullPath: '/api/stripe-webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/checkout': {
       id: '/api/checkout'
       path: '/api/checkout'
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   MerciRoute: MerciRoute,
   MesCommandesRoute: MesCommandesRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
