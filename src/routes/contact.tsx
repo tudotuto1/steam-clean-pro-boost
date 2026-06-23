@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { LegalLayout, MailLink } from "@/components/legal/LegalLayout";
+import { LegalLayout, LegalParagraph } from "@/components/legal/LegalLayout";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -11,18 +11,10 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <LegalLayout title="Contact">
-      <p>
-        Une question avant ou après l'achat ? Réponse par courriel sous 24 heures
-        ouvrables.
-      </p>
-      <p>
-        Courriel : <MailLink />
-      </p>
-      <p>
-        Pour le suivi, un retour ou la garantie, indiquez votre numéro de
-        commande.
-      </p>
+    <LegalLayout titleKey="legal.contact.title">
+      <LegalParagraph textKey="legal.contact.p1" />
+      <LegalParagraph textKey="legal.contact.p2" />
+      <LegalParagraph textKey="legal.contact.p3" />
     </LegalLayout>
   );
 }

@@ -1,115 +1,80 @@
 import { ShieldCheck, Truck, Headphones, Lock, Leaf, Package, Clock, Tag } from "lucide-react";
 
-const promises = [
-  {
-    icon: Truck,
-    title: "Livraison 5 à 8 jours ouvrables",
-    text: "Expédié partout au Canada et aux USA via nos fournisseurs partenaires. Un numéro de suivi vous est envoyé dès l'expédition.",
-  },
-  {
-    icon: Tag,
-    title: "Prix tout inclus : $85",
-    text: "Pas de frais cachés. Le prix affiché comprend l'appareil, le coffret de 9 accessoires et la livraison à domicile.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Garantie 2 ans constructeur",
-    text: "En cas de défaut de fabrication, l'appareil est remplacé. Vous achetez l'esprit tranquille, pas un produit jetable.",
-  },
-  {
-    icon: Lock,
-    title: "Paiement 100% sécurisé",
-    text: "Chiffrement SSL et passerelle de paiement reconnue. Carte de crédit, Apple Pay, Google Pay et PayPal acceptés.",
-  },
-  {
-    icon: Headphones,
-    title: "Support humain, en français",
-    text: "Une question avant ou après l'achat ? Notre équipe répond par courriel sous 24 h ouvrables.",
-  },
-  {
-    icon: Leaf,
-    title: "Honnête sur ce que ça fait",
-    text: "La vapeur à 132°C dégraisse, ravive les joints et assainit. Ce n'est pas magique : on vous explique exactement comment l'utiliser.",
-  },
+import { useT } from "@/lib/i18n";
+import type { TKey } from "@/lib/locales/fr";
+
+const promises: { icon: typeof Truck; titleKey: TKey; textKey: TKey }[] = [
+  { icon: Truck, titleKey: "trust.promise0.title", textKey: "trust.promise0.text" },
+  { icon: Tag, titleKey: "trust.promise1.title", textKey: "trust.promise1.text" },
+  { icon: ShieldCheck, titleKey: "trust.promise2.title", textKey: "trust.promise2.text" },
+  { icon: Lock, titleKey: "trust.promise3.title", textKey: "trust.promise3.text" },
+  { icon: Headphones, titleKey: "trust.promise4.title", textKey: "trust.promise4.text" },
+  { icon: Leaf, titleKey: "trust.promise5.title", textKey: "trust.promise5.text" },
 ];
 
-const faqs = [
-  {
-    q: "Quand vais-je recevoir ma commande ?",
-    a: "Votre commande est préparée sous 24 à 48 h, puis expédiée par nos fournisseurs partenaires. Comptez 5 à 8 jours ouvrables pour la livraison au Canada et aux USA. Vous recevez un numéro de suivi par courriel dès l'expédition.",
-  },
-  {
-    q: "Combien coûte la livraison ?",
-    a: "La livraison est incluse dans le prix de $85. Aucun supplément à prévoir au moment du paiement.",
-  },
-  {
-    q: "Est-ce vraiment efficace sans produits chimiques ?",
-    a: "Oui. La vapeur sèche à 132°C dissout la graisse cuite, ramollit le calcaire et neutralise les bactéries et acariens sur la majorité des surfaces. Vous n'avez besoin que d'eau du robinet.",
-  },
-  {
-    q: "Sur quoi puis-je l'utiliser ?",
-    a: "Plaques de cuisson, hotte, joints de carrelage, robinetterie, sièges et tapis de voiture, jantes, canapés en tissu, matelas, vitres. Évitez le cuir non traité, le bois brut et les écrans.",
-  },
-  {
-    q: "L'appareil est-il garanti ?",
-    a: "Oui, garantie constructeur 2 ans contre tout défaut de fabrication. Il suffit de nous contacter avec votre numéro de commande.",
-  },
+const faqs: { qKey: TKey; aKey: TKey }[] = [
+  { qKey: "faq.q0", aKey: "faq.a0" },
+  { qKey: "faq.q1", aKey: "faq.a1" },
+  { qKey: "faq.q2", aKey: "faq.a2" },
+  { qKey: "faq.q3", aKey: "faq.a3" },
+  { qKey: "faq.q4", aKey: "faq.a4" },
 ];
 
 export function Reviews() {
+  const t = useT();
   return (
     <section id="confiance" className="py-16 sm:py-24 bg-gradient-soft">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold tracking-widest text-primary uppercase">Nos Engagements</span>
+          <span className="text-xs font-bold tracking-widest text-primary uppercase">{t("trust.kicker")}</span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-balance">
-            Acheter en ligne mérite de la transparence
+            {t("trust.title")}
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            Voici exactement ce que vous obtenez en commandant aujourd'hui. Pas de faux compteurs, pas de fausses promesses.
+            {t("trust.subtitle")}
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
           {promises.map((p) => (
-            <article key={p.title} className="p-6 rounded-2xl bg-card border border-border hover:shadow-elevated transition-all hover:-translate-y-0.5">
+            <article key={p.titleKey} className="p-6 rounded-2xl bg-card border border-border hover:shadow-elevated transition-all hover:-translate-y-0.5">
               <div className="h-11 w-11 rounded-xl bg-gradient-primary grid place-items-center mb-4">
                 <p.icon className="h-5 w-5 text-primary-foreground" />
               </div>
-              <h3 className="font-bold text-base mb-1.5">{p.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.text}</p>
+              <h3 className="font-bold text-base mb-1.5">{t(p.titleKey)}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t(p.textKey)}</p>
             </article>
           ))}
         </div>
 
         <div className="grid lg:grid-cols-5 gap-8">
           <div className="lg:col-span-2">
-            <span className="text-xs font-bold tracking-widest text-primary uppercase">FAQ</span>
+            <span className="text-xs font-bold tracking-widest text-primary uppercase">{t("faq.kicker")}</span>
             <h3 className="mt-3 text-2xl sm:text-3xl font-bold text-balance">
-              Les réponses claires aux questions qu'on nous pose le plus
+              {t("faq.title")}
             </h3>
             <div className="mt-6 flex items-center gap-3 p-4 rounded-2xl bg-card border border-border">
               <Clock className="h-5 w-5 text-primary flex-shrink-0" />
               <p className="text-sm">
-                <strong>Délai de livraison&nbsp;:</strong> 5 à 8 jours ouvrables au Canada et aux USA, via nos fournisseurs partenaires.
+                <strong>{t("faq.note1.label")}</strong> {t("faq.note1.text")}
               </p>
             </div>
             <div className="mt-3 flex items-center gap-3 p-4 rounded-2xl bg-card border border-border">
               <Package className="h-5 w-5 text-primary flex-shrink-0" />
               <p className="text-sm">
-                <strong>Suivi en temps réel</strong> envoyé par courriel dès que votre colis quitte l'entrepôt.
+                <strong>{t("faq.note2.label")}</strong> {t("faq.note2.text")}
               </p>
             </div>
           </div>
 
           <div className="lg:col-span-3 space-y-3">
             {faqs.map((f) => (
-              <details key={f.q} className="group p-5 rounded-2xl bg-card border border-border open:shadow-soft transition-shadow">
+              <details key={f.qKey} className="group p-5 rounded-2xl bg-card border border-border open:shadow-soft transition-shadow">
                 <summary className="font-semibold cursor-pointer list-none flex items-center justify-between gap-4">
-                  <span>{f.q}</span>
+                  <span>{t(f.qKey)}</span>
                   <span className="h-6 w-6 rounded-full bg-muted grid place-items-center text-primary text-lg leading-none transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.a}</p>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t(f.aKey)}</p>
               </details>
             ))}
           </div>

@@ -1,7 +1,8 @@
-import { ShoppingBag, Sparkles, LogOut, User, Package, ChevronDown } from "lucide-react";
+import { ShoppingBag, Sparkles, LogOut, User, Package, ChevronDown, Globe } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 import { useAuth } from "@/lib/auth";
+import { useI18n, useT } from "@/lib/i18n";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -16,8 +17,24 @@ interface NavbarProps {
   onCartOpen: () => void;
 }
 
+function LangToggle() {
+  const { lang, setLang } = useI18n();
+  const t = useT();
+  return (
+    <button
+      onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+      aria-label={t("lang.switch")}
+      className="h-10 px-3 flex items-center gap-1.5 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-bold uppercase"
+    >
+      <Globe className="h-3.5 w-3.5" />
+      {lang === "fr" ? "EN" : "FR"}
+    </button>
+  );
+}
+
 export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
   const { user, loading, openAuthDialog, signOut } = useAuth();
+  const t = useT();
 
   return (
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl border-b border-border/60">
@@ -32,13 +49,15 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
         </a>
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <a href="#features" className="hover:text-foreground transition-colors">Avantages</a>
-          <a href="#demo" className="hover:text-foreground transition-colors">Démo</a>
-          <a href="#box" className="hover:text-foreground transition-colors">Contenu</a>
-          <a href="#avis" className="hover:text-foreground transition-colors">Avis</a>
+          <a href="#features" className="hover:text-foreground transition-colors">{t("nav.advantages")}</a>
+          <a href="#demo" className="hover:text-foreground transition-colors">{t("nav.demo")}</a>
+          <a href="#box" className="hover:text-foreground transition-colors">{t("nav.contents")}</a>
+          <a href="#avis" className="hover:text-foreground transition-colors">{t("nav.reviews")}</a>
         </nav>
 
         <div className="flex items-center gap-2">
+          <LangToggle />
+
           {!loading &&
             (user ? (
               <>
@@ -47,7 +66,7 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
                   className="hidden sm:flex items-center gap-1.5 h-10 px-3 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium"
                 >
                   <Package className="h-3.5 w-3.5" />
-                  Mes commandes
+                  {t("nav.myOrders")}
                 </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="h-10 px-3 flex items-center gap-1.5 rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
@@ -63,13 +82,13 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
                     <DropdownMenuItem asChild>
                       <Link to="/mes-commandes" className="cursor-pointer">
                         <Package className="h-4 w-4" />
-                        Mes commandes
+                        {t("nav.myOrders")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer">
                       <LogOut className="h-4 w-4" />
-                      Déconnexion
+                      {t("nav.signOut")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -79,13 +98,13 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
                 onClick={openAuthDialog}
                 className="h-10 px-4 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all text-sm font-medium"
               >
-                Se connecter
+                {t("nav.signIn")}
               </button>
             ))}
 
           <button
             onClick={onCartOpen}
-            aria-label="Ouvrir le panier"
+            aria-label={t("nav.openCart")}
             className="relative h-10 w-10 grid place-items-center rounded-full border border-border hover:border-primary hover:bg-accent transition-all"
           >
             <ShoppingBag className="h-4 w-4" />

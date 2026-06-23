@@ -3,6 +3,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Loader2, Package, Truck, ExternalLink, ShoppingBag } from "lucide-react";
 
 import { useAuth } from "@/lib/auth";
+import { useI18n, useT, formatDate, formatAmount } from "@/lib/i18n";
+import type { TKey } from "@/lib/locales/fr";
 import { supabase } from "@/lib/supabase";
 import {
   Card,
@@ -48,57 +50,35 @@ interface Order {
   shipping_address: ShippingAddress | null;
 }
 
-const STATUS_MAP: Record<string, { label: string; className: string }> = {
-  paid: { label: "Payée", className: "bg-blue-500/10 text-blue-600 border-blue-500/20" },
-  fulfilled: {
-    label: "En préparation",
-    className: "bg-violet-500/10 text-violet-600 border-violet-500/20",
-  },
-  shipped: { label: "Expédiée", className: "bg-amber-500/10 text-amber-600 border-amber-500/20" },
-  delivered: { label: "Livrée", className: "bg-success/10 text-success border-success/20" },
-  refunded: {
-    label: "Remboursée",
-    className: "bg-muted text-muted-foreground border-border",
-  },
-  cancelled: {
-    label: "Annulée",
-    className: "bg-destructive/10 text-destructive border-destructive/20",
-  },
+const STATUS_MAP: Record<string, { labelKey: TKey; className: string }> = {
+  paid: { labelKey: "status.paid", className: "bg-blue-500/10 text-blue-600 border-blue-500/20" },
+  fulfilled: { labelKey: "status.fulfilled", className: "bg-violet-500/10 text-violet-600 border-violet-500/20" },
+  shipped: { labelKey: "status.shipped", className: "bg-amber-500/10 text-amber-600 border-amber-500/20" },
+  delivered: { labelKey: "status.delivered", className: "bg-success/10 text-success border-success/20" },
+  refunded: { labelKey: "status.refunded", className: "bg-muted text-muted-foreground border-border" },
+  cancelled: { labelKey: "status.cancelled", className: "bg-destructive/10 text-destructive border-destructive/20" },
 };
 
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(d);
-}
-
-function formatAmount(cents: number | null, currency: string | null): string {
-  const value = (cents ?? 0) / 100;
-  const formatted = value.toLocaleString("fr-CA", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  return `${formatted} $ ${(currency ?? "cad").toUpperCase()}`;
-}
-
 function StatusBadge({ status }: { status: string | null }) {
-  const entry = (status && STATUS_MAP[status]) || {
-    label: status ?? "—",
-    className: "bg-muted text-muted-foreground border-border",
-  };
+  const t = useT();
+  const entry = status ? STATUS_MAP[status] : undefined;
+  if (!entry) {
+    return (
+      <Badge variant="outline" className="bg-muted text-muted-foreground border-border">
+        {status ?? "—"}
+      </Badge>
+    );
+  }
   return (
     <Badge variant="outline" className={entry.className}>
-      {entry.label}
+      {t(entry.labelKey)}
     </Badge>
   );
 }
 
 function MesCommandesPage() {
   const { session, loading, openAuthDialog } = useAuth();
+  const t = useT();
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState<Order[] | null>(null);
@@ -149,15 +129,15 @@ function MesCommandesPage() {
             to="/"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            Retour à la boutique
+            {t("nav.backToShop")}
           </Link>
         </div>
       </header>
 
       <main className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
-        <h1 className="text-2xl sm:text-3xl font-bold">Mes commandes</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">{t("orders.title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Historique et suivi de vos commandes.
+          {t("orders.subtitle")}
         </p>
 
         <div className="mt-8">
@@ -181,15 +161,16 @@ function MesCommandesPage() {
 }
 
 function EmptyState() {
+  const t = useT();
   return (
     <div className="text-center py-20">
       <div className="mx-auto mb-5 h-14 w-14 grid place-items-center rounded-full bg-muted">
         <ShoppingBag className="h-6 w-6 text-muted-foreground" />
       </div>
-      <p className="text-muted-foreground">Aucune commande pour l'instant.</p>
+      <p className="text-muted-foreground">{t("orders.empty")}</p>
       <div className="mt-6">
         <Button asChild>
-          <Link to="/">Voir le produit</Link>
+          <Link to="/">{t("orders.seeProduct")}</Link>
         </Button>
       </div>
     </div>
@@ -197,6 +178,8 @@ function EmptyState() {
 }
 
 function OrderCard({ order }: { order: Order }) {
+  const t = useT();
+  const { lang } = useI18n();
   const addr = order.shipping_address;
   const hasAddress =
     !!addr &&
@@ -215,10 +198,10 @@ function OrderCard({ order }: { order: Order }) {
           </div>
           <div>
             <CardTitle className="text-base leading-tight">
-              VaporPro — Nettoyeur vapeur
+              {t("orders.productName")}
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
-              {formatDate(order.created_at)}
+              {formatDate(order.created_at, lang)}
             </p>
           </div>
         </div>
@@ -228,10 +211,10 @@ function OrderCard({ order }: { order: Order }) {
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">
-            Quantité : <span className="font-medium text-foreground">{order.quantity ?? 1}</span>
+            {t("orders.quantity")} <span className="font-medium text-foreground">{order.quantity ?? 1}</span>
           </span>
           <span className="font-bold text-primary-deep">
-            {formatAmount(order.amount_total, order.currency)}
+            {formatAmount(order.amount_total, order.currency, lang)}
           </span>
         </div>
 
@@ -240,9 +223,9 @@ function OrderCard({ order }: { order: Order }) {
             <div className="flex items-center gap-2 text-sm">
               <Truck className="h-4 w-4 text-primary flex-shrink-0" />
               <span>
-                Transporteur :{" "}
+                {t("orders.carrier")}{" "}
                 <span className="font-medium">{order.tracking_carrier ?? "—"}</span>{" "}
-                · N° <span className="font-medium">{order.tracking_number}</span>
+                · {t("orders.trackingNo")} <span className="font-medium">{order.tracking_number}</span>
               </span>
             </div>
             {order.tracking_url && (
@@ -252,7 +235,7 @@ function OrderCard({ order }: { order: Order }) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
               >
-                Suivre mon colis
+                {t("orders.track")}
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
             )}
@@ -263,7 +246,7 @@ function OrderCard({ order }: { order: Order }) {
           <div className="text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5 text-foreground font-medium mb-1">
               <Package className="h-3.5 w-3.5" />
-              Adresse de livraison
+              {t("orders.shippingAddress")}
             </div>
             {order.shipping_name && <div>{order.shipping_name}</div>}
             {addr?.line1 && <div>{addr.line1}</div>}

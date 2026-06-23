@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Loader2, Star, BadgeCheck } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
+import { useI18n, useT, formatDate, type Lang } from "@/lib/i18n";
 import { Badge } from "@/components/ui/badge";
 import { ReviewForm } from "./ReviewForm";
 
@@ -15,19 +16,9 @@ interface Review {
   created_at: string;
 }
 
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(d);
-}
-
 function Stars({ rating }: { rating: number }) {
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} sur 5`}>
+    <div className="flex items-center gap-0.5" aria-label={`${rating}/5`}>
       {[1, 2, 3, 4, 5].map((n) => (
         <Star
           key={n}
@@ -41,6 +32,8 @@ function Stars({ rating }: { rating: number }) {
 }
 
 export function ReviewsSection() {
+  const t = useT();
+  const { lang } = useI18n();
   const [reviews, setReviews] = useState<Review[] | null>(null);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
 
@@ -86,14 +79,13 @@ export function ReviewsSection() {
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center mb-10">
           <span className="text-xs font-bold tracking-widest text-primary uppercase">
-            Avis clients
+            {t("reviews.kicker")}
           </span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-balance">
-            Ce que disent nos acheteurs
+            {t("reviews.title")}
           </h2>
           <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
-            Des avis vérifiés, laissés uniquement par des clients ayant acheté le
-            produit.
+            {t("reviews.subtitle")}
           </p>
         </div>
 
@@ -107,7 +99,7 @@ export function ReviewsSection() {
           </div>
         ) : reviews.length === 0 ? (
           <p className="text-center text-sm text-muted-foreground py-8">
-            Sois le premier à laisser un avis.
+            {t("reviews.empty")}
           </p>
         ) : (
           <div className="grid sm:grid-cols-2 gap-4">
@@ -116,6 +108,8 @@ export function ReviewsSection() {
                 key={review.id}
                 review={review}
                 signedUrls={signedUrls}
+                lang={lang}
+                t={t}
               />
             ))}
           </div>
@@ -128,9 +122,13 @@ export function ReviewsSection() {
 function ReviewCard({
   review,
   signedUrls,
+  lang,
+  t,
 }: {
   review: Review;
   signedUrls: Record<string, string>;
+  lang: Lang;
+  t: ReturnType<typeof useT>;
 }) {
   const photos = (review.image_paths ?? [])
     .map((p) => signedUrls[p])
@@ -145,16 +143,16 @@ function ReviewCard({
           className="bg-success/10 text-success border-success/20 gap-1"
         >
           <BadgeCheck className="h-3.5 w-3.5" />
-          Achat vérifié
+          {t("reviews.verified")}
         </Badge>
       </div>
 
       <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
         <span className="font-medium text-foreground">
-          {review.author_label ?? "Client vérifié"}
+          {review.author_label ?? t("reviews.verifiedCustomer")}
         </span>
         <span>·</span>
-        <span>{formatDate(review.created_at)}</span>
+        <span>{formatDate(review.created_at, lang)}</span>
       </div>
 
       {review.title && (
@@ -178,7 +176,7 @@ function ReviewCard({
             >
               <img
                 src={url}
-                alt={`Photo ${i + 1} de l'avis`}
+                alt={`${t("reviews.photoAlt")} ${i + 1}`}
                 loading="lazy"
                 className="h-full w-full object-cover"
               />

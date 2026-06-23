@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { LegalLayout, MailLink } from "@/components/legal/LegalLayout";
+import { LegalLayout, LegalParagraph } from "@/components/legal/LegalLayout";
 
 export const Route = createFileRoute("/mentions")({
   head: () => ({
@@ -11,14 +11,9 @@ export const Route = createFileRoute("/mentions")({
 
 function MentionsPage() {
   return (
-    <LegalLayout title="Mentions légales">
-      <p>
-        Site : VaporPro. Contact : <MailLink />.
-      </p>
-      <p>
-        Hébergement : Vercel Inc. Le contenu du site (textes, images) est la
-        propriété de VaporPro et ne peut être reproduit sans autorisation.
-      </p>
+    <LegalLayout titleKey="legal.mentions.title">
+      <LegalParagraph textKey="legal.mentions.p1" />
+      <LegalParagraph textKey="legal.mentions.p2" />
     </LegalLayout>
   );
 }

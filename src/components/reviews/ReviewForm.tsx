@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Loader2, Star, Upload, X } from "lucide-react";
 
 import { useAuth } from "@/lib/auth";
+import { useT } from "@/lib/i18n";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,7 @@ interface Props {
 
 export function ReviewForm({ onSubmitted }: Props) {
   const { user, session, loading: authLoading, openAuthDialog } = useAuth();
+  const t = useT();
 
   const [eligibility, setEligibility] = useState<
     "checking" | "eligible" | "ineligible"
@@ -71,7 +73,7 @@ export function ReviewForm({ onSubmitted }: Props) {
     return (
       <div className="text-center">
         <Button onClick={openAuthDialog} variant="outline">
-          Se connecter pour laisser un avis
+          {t("reviewForm.signInCta")}
         </Button>
       </div>
     );
@@ -88,7 +90,7 @@ export function ReviewForm({ onSubmitted }: Props) {
   if (eligibility === "ineligible") {
     return (
       <p className="text-center text-sm text-muted-foreground">
-        Seuls les clients ayant acheté peuvent laisser un avis.
+        {t("reviewForm.ineligible")}
       </p>
     );
   }
@@ -96,7 +98,7 @@ export function ReviewForm({ onSubmitted }: Props) {
   if (!open) {
     return (
       <div className="text-center">
-        <Button onClick={() => setOpen(true)}>Laisser un avis</Button>
+        <Button onClick={() => setOpen(true)}>{t("reviewForm.openButton")}</Button>
       </div>
     );
   }
@@ -125,6 +127,7 @@ function ReviewFormFields({
   onCancel: () => void;
   onSubmitted: () => void;
 }) {
+  const t = useT();
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [title, setTitle] = useState("");
@@ -139,12 +142,12 @@ function ReviewFormFields({
     if (!list) return;
     const picked = Array.from(list);
     if (picked.length + files.length > MAX_PHOTOS) {
-      setError(`Maximum ${MAX_PHOTOS} photos.`);
+      setError(t("reviewForm.errMaxPhotos"));
       return;
     }
     for (const f of picked) {
       if (f.size > MAX_SIZE) {
-        setError(`Chaque photo doit faire moins de 5 Mo (${f.name}).`);
+        setError(`${t("reviewForm.errSize")} (${f.name})`);
         return;
       }
     }
@@ -158,11 +161,11 @@ function ReviewFormFields({
     e.preventDefault();
     setError(null);
     if (rating < 1 || rating > 5) {
-      setError("Veuillez attribuer une note.");
+      setError(t("reviewForm.errRating"));
       return;
     }
     if (!body.trim()) {
-      setError("Veuillez écrire un commentaire.");
+      setError(t("reviewForm.errComment"));
       return;
     }
     setSubmitting(true);
@@ -178,7 +181,7 @@ function ReviewFormFields({
           .from("review-images")
           .upload(path, file, { contentType: file.type || undefined });
         if (uploadError) {
-          throw new Error(`Échec de l'envoi d'une photo : ${uploadError.message}`);
+          throw new Error(`${t("reviewForm.errUpload")} : ${uploadError.message}`);
         }
         imagePaths.push(path);
       }
@@ -203,11 +206,7 @@ function ReviewFormFields({
       setFiles([]);
     } catch (err) {
       console.error(err);
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Une erreur est survenue. Réessayez.",
-      );
+      setError(err instanceof Error ? err.message : t("reviewForm.errGeneric"));
     } finally {
       setSubmitting(false);
     }
@@ -216,12 +215,10 @@ function ReviewFormFields({
   if (success) {
     return (
       <div className="rounded-2xl border border-border bg-card p-6 text-center">
-        <p className="font-semibold text-success">
-          Merci ! Ton avis sera publié après validation.
-        </p>
+        <p className="font-semibold text-success">{t("reviewForm.success")}</p>
         <div className="mt-4">
           <Button variant="outline" onClick={onSubmitted}>
-            Fermer
+            {t("reviewForm.close")}
           </Button>
         </div>
       </div>
@@ -234,13 +231,13 @@ function ReviewFormFields({
       className="rounded-2xl border border-border bg-card p-6 space-y-4"
     >
       <div className="space-y-1.5">
-        <Label>Votre note</Label>
-        <div className="flex items-center gap-1" role="radiogroup" aria-label="Note">
+        <Label>{t("reviewForm.ratingLabel")}</Label>
+        <div className="flex items-center gap-1" role="radiogroup" aria-label={t("reviewForm.ratingAria")}>
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
               type="button"
-              aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
+              aria-label={`${n} ${t("reviewForm.stars")}`}
               onClick={() => setRating(n)}
               onMouseEnter={() => setHover(n)}
               onMouseLeave={() => setHover(0)}
@@ -259,36 +256,36 @@ function ReviewFormFields({
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="review-title">Titre (facultatif)</Label>
+        <Label htmlFor="review-title">{t("reviewForm.titleLabel")}</Label>
         <Input
           id="review-title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           maxLength={120}
-          placeholder="Un résumé en quelques mots"
+          placeholder={t("reviewForm.titlePlaceholder")}
         />
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="review-body">Votre commentaire</Label>
+        <Label htmlFor="review-body">{t("reviewForm.commentLabel")}</Label>
         <Textarea
           id="review-body"
           value={body}
           onChange={(e) => setBody(e.target.value)}
           required
           rows={4}
-          placeholder="Partagez votre expérience avec le produit…"
+          placeholder={t("reviewForm.commentPlaceholder")}
         />
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="review-photos">Photos (facultatif, max 3 · 5 Mo)</Label>
+        <Label htmlFor="review-photos">{t("reviewForm.photosLabel")}</Label>
         <label
           htmlFor="review-photos"
           className="flex items-center gap-2 cursor-pointer rounded-xl border border-dashed border-border px-4 py-3 text-sm text-muted-foreground hover:border-primary transition-colors"
         >
           <Upload className="h-4 w-4" />
-          Ajouter des photos
+          {t("reviewForm.addPhotos")}
         </label>
         <input
           id="review-photos"
@@ -313,7 +310,7 @@ function ReviewFormFields({
                 <button
                   type="button"
                   onClick={() => removeFile(i)}
-                  aria-label="Retirer"
+                  aria-label={t("reviewForm.removeAria")}
                   className="absolute top-0.5 right-0.5 h-5 w-5 grid place-items-center rounded-full bg-foreground/70 text-background"
                 >
                   <X className="h-3 w-3" />
@@ -333,7 +330,7 @@ function ReviewFormFields({
       <div className="flex gap-2">
         <Button type="submit" disabled={submitting}>
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          Publier mon avis
+          {t("reviewForm.submit")}
         </Button>
         <Button
           type="button"
@@ -341,7 +338,7 @@ function ReviewFormFields({
           onClick={onCancel}
           disabled={submitting}
         >
-          Annuler
+          {t("reviewForm.cancel")}
         </Button>
       </div>
     </form>

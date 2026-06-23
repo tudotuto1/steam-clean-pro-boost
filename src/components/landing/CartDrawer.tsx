@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { X, Plus, Minus, Truck, Lock, Trash2, Package, Loader2 } from "lucide-react";
 import mainImg from "@/assets/product-main.jpeg";
 import { useAuth } from "@/lib/auth";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   open: boolean;
@@ -16,6 +17,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { session, openAuthDialog } = useAuth();
+  const t = useT();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -49,16 +51,12 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.url) {
-        throw new Error(data?.error ?? "Le paiement n'a pas pu démarrer.");
+        throw new Error(data?.error ?? t("cart.errStart"));
       }
       window.location.href = data.url;
     } catch (err) {
       console.error(err);
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Le paiement n'a pas pu démarrer. Réessayez.",
-      );
+      setError(err instanceof Error ? err.message : t("cart.errRetry"));
       setLoading(false);
     }
   };
@@ -78,8 +76,8 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
         aria-hidden={!open}
       >
         <header className="flex items-center justify-between px-5 h-16 border-b border-border">
-          <h3 className="font-bold text-lg">Votre Panier ({quantity})</h3>
-          <button onClick={onClose} aria-label="Fermer" className="h-9 w-9 grid place-items-center rounded-full hover:bg-muted transition-colors">
+          <h3 className="font-bold text-lg">{t("cart.title")} ({quantity})</h3>
+          <button onClick={onClose} aria-label={t("cart.close")} className="h-9 w-9 grid place-items-center rounded-full hover:bg-muted transition-colors">
             <X className="h-4 w-4" />
           </button>
         </header>
@@ -87,11 +85,11 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
         <div className="px-5 py-4 bg-accent/40 border-b border-border">
           <div className="flex items-center gap-2 text-sm font-medium mb-1">
             <Truck className="h-4 w-4 text-primary" />
-            <span className="text-success font-bold">Livraison incluse dans le prix</span>
+            <span className="text-success font-bold">{t("cart.shippingIncluded")}</span>
           </div>
           <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
             <Package className="h-3.5 w-3.5" />
-            Livré au Canada & USA en 5 à 8 jours ouvrables (fournisseurs partenaires)
+            {t("cart.shippingNote")}
           </div>
         </div>
 
@@ -102,10 +100,10 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
                 <img src={mainImg} alt="" className="w-full h-full object-contain p-1" />
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="font-semibold text-sm leading-tight">Nettoyeur Vapeur Haute Pression VaporPro</h4>
+                <h4 className="font-semibold text-sm leading-tight">{t("cart.productName")}</h4>
                 <div className="flex items-baseline gap-2 mt-1">
                   <span className="font-bold text-primary-deep">${UNIT_PRICE}</span>
-                  <span className="text-[10px] text-success font-semibold">Tout inclus</span>
+                  <span className="text-[10px] text-success font-semibold">{t("cart.allIncluded")}</span>
                 </div>
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center border border-border rounded-full">
@@ -117,7 +115,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
-                  <button onClick={() => setQuantity(0)} aria-label="Supprimer" className="text-muted-foreground hover:text-destructive">
+                  <button onClick={() => setQuantity(0)} aria-label={t("cart.remove")} className="text-muted-foreground hover:text-destructive">
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
@@ -125,22 +123,22 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
             </div>
           ) : (
             <div className="text-center py-16 text-muted-foreground">
-              <p>Votre panier est vide</p>
+              <p>{t("cart.empty")}</p>
             </div>
           )}
         </div>
 
         <footer className="border-t border-border p-5 space-y-3 bg-card">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Sous-total</span>
+            <span className="text-muted-foreground">{t("cart.subtotal")}</span>
             <span className="font-semibold">${subtotal}</span>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>Livraison</span>
-            <span className="text-success font-semibold">Incluse</span>
+            <span>{t("cart.shipping")}</span>
+            <span className="text-success font-semibold">{t("cart.included")}</span>
           </div>
           <div className="flex justify-between text-base font-bold">
-            <span>Total</span>
+            <span>{t("cart.total")}</span>
             <span className="text-primary-deep">${subtotal}</span>
           </div>
           {error && (
@@ -158,9 +156,9 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
             ) : (
               <Lock className="h-4 w-4" />
             )}
-            {loading ? "Redirection..." : "Passer Commande"}
+            {loading ? t("cart.redirecting") : t("cart.checkout")}
           </button>
-          <p className="text-[11px] text-center text-muted-foreground">Paiement sécurisé · Carte · PayPal · Apple Pay · Google Pay</p>
+          <p className="text-[11px] text-center text-muted-foreground">{t("cart.paymentNote")}</p>
         </footer>
       </aside>
     </>

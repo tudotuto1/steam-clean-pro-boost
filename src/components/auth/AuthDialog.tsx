@@ -2,6 +2,8 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
+import { useT } from "@/lib/i18n";
+import type { TKey } from "@/lib/locales/fr";
 import {
   Dialog,
   DialogContent,
@@ -19,19 +21,19 @@ interface Props {
   onClose: () => void;
 }
 
-function translateError(message: string): string {
+// Map a Supabase error message to a translation key (or null to show raw).
+function errorKey(message: string): TKey | null {
   const m = message.toLowerCase();
-  if (m.includes("invalid login credentials")) return "Identifiants invalides.";
-  if (m.includes("email not confirmed"))
-    return "Veuillez confirmer votre email avant de vous connecter (vérifiez votre boîte de réception).";
+  if (m.includes("invalid login credentials")) return "auth.err.invalid";
+  if (m.includes("email not confirmed")) return "auth.err.notConfirmed";
   if (m.includes("user already registered") || m.includes("already registered"))
-    return "Cet email est déjà utilisé. Connectez-vous plutôt.";
-  if (m.includes("password should be at least"))
-    return "Le mot de passe doit contenir au moins 6 caractères.";
-  return message;
+    return "auth.err.alreadyUsed";
+  if (m.includes("password should be at least")) return "auth.err.weakPassword";
+  return null;
 }
 
 export function AuthDialog({ open, onClose }: Props) {
+  const t = useT();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,6 +46,11 @@ export function AuthDialog({ open, onClose }: Props) {
     setInfo(null);
   };
 
+  const showError = (message: string) => {
+    const key = errorKey(message);
+    setError(key ? t(key) : message);
+  };
+
   const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
     reset();
@@ -54,7 +61,7 @@ export function AuthDialog({ open, onClose }: Props) {
         password,
       });
       if (error) {
-        setError(translateError(error.message));
+        showError(error.message);
         return;
       }
       // onAuthStateChange closes the dialog on success.
@@ -70,19 +77,17 @@ export function AuthDialog({ open, onClose }: Props) {
     try {
       const { data, error } = await supabase.auth.signUp({ email, password });
       if (error) {
-        setError(translateError(error.message));
+        showError(error.message);
         return;
       }
       // Supabase returns a user with an empty identities array when the
       // email is already registered (without leaking it as an error).
       if (data.user && data.user.identities && data.user.identities.length === 0) {
-        setError("Cet email est déjà utilisé. Connectez-vous plutôt.");
+        setError(t("auth.err.alreadyUsed"));
         return;
       }
       if (!data.session) {
-        setInfo(
-          "Inscription réussie ! Vérifiez votre email pour confirmer votre compte.",
-        );
+        setInfo(t("auth.signupConfirm"));
         return;
       }
       // Session present (email confirmation disabled) → dialog closes via listener.
@@ -99,7 +104,7 @@ export function AuthDialog({ open, onClose }: Props) {
         provider: "google",
         options: { redirectTo: window.location.origin },
       });
-      if (error) setError(translateError(error.message));
+      if (error) showError(error.message);
       // On success the browser is redirected to Google.
     } finally {
       setLoading(false);
@@ -118,10 +123,8 @@ export function AuthDialog({ open, onClose }: Props) {
     >
       <DialogContent className="sm:max-w-[420px]">
         <DialogHeader>
-          <DialogTitle>Connexion requise</DialogTitle>
-          <DialogDescription>
-            Connectez-vous ou créez un compte pour finaliser votre commande.
-          </DialogDescription>
+          <DialogTitle>{t("auth.title")}</DialogTitle>
+          <DialogDescription>{t("auth.description")}</DialogDescription>
         </DialogHeader>
 
         <Button
@@ -132,7 +135,7 @@ export function AuthDialog({ open, onClose }: Props) {
           disabled={loading}
         >
           <GoogleIcon />
-          Continuer avec Google
+          {t("auth.google")}
         </Button>
 
         <div className="relative my-1">
@@ -140,7 +143,7 @@ export function AuthDialog({ open, onClose }: Props) {
             <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-background px-2 text-muted-foreground">ou</span>
+            <span className="bg-background px-2 text-muted-foreground">{t("auth.or")}</span>
           </div>
         </div>
 
@@ -152,27 +155,27 @@ export function AuthDialog({ open, onClose }: Props) {
           }}
         >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Connexion</TabsTrigger>
-            <TabsTrigger value="signup">Inscription</TabsTrigger>
+            <TabsTrigger value="signin">{t("auth.tabSignin")}</TabsTrigger>
+            <TabsTrigger value="signup">{t("auth.tabSignup")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="signin">
             <form onSubmit={handleSignIn} className="space-y-3 pt-2">
               <Field
                 id="signin-email"
-                label="Email"
+                label={t("auth.email")}
                 type="email"
                 value={email}
                 onChange={setEmail}
               />
               <Field
                 id="signin-password"
-                label="Mot de passe"
+                label={t("auth.password")}
                 type="password"
                 value={password}
                 onChange={setPassword}
               />
-              <SubmitButton loading={loading}>Se connecter</SubmitButton>
+              <SubmitButton loading={loading}>{t("auth.signInBtn")}</SubmitButton>
             </form>
           </TabsContent>
 
@@ -180,20 +183,20 @@ export function AuthDialog({ open, onClose }: Props) {
             <form onSubmit={handleSignUp} className="space-y-3 pt-2">
               <Field
                 id="signup-email"
-                label="Email"
+                label={t("auth.email")}
                 type="email"
                 value={email}
                 onChange={setEmail}
               />
               <Field
                 id="signup-password"
-                label="Mot de passe"
+                label={t("auth.password")}
                 type="password"
                 value={password}
                 onChange={setPassword}
                 autoComplete="new-password"
               />
-              <SubmitButton loading={loading}>Créer mon compte</SubmitButton>
+              <SubmitButton loading={loading}>{t("auth.signUpBtn")}</SubmitButton>
             </form>
           </TabsContent>
         </Tabs>
