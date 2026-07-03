@@ -1,4 +1,5 @@
-import { ShoppingBag, Sparkles, LogOut, User, Package, ChevronDown, Globe } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ShoppingBag, Sparkles, LogOut, User, Package, ChevronDown, Globe, Wrench } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 import { useAuth } from "@/lib/auth";
@@ -33,8 +34,30 @@ function LangToggle() {
 }
 
 export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
-  const { user, loading, openAuthDialog, signOut } = useAuth();
+  const { user, session, loading, openAuthDialog, signOut } = useAuth();
   const t = useT();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Discreet owner check: only show the Admin link when the server confirms.
+  useEffect(() => {
+    if (!session) {
+      setIsAdmin(false);
+      return;
+    }
+    let active = true;
+    fetch("/api/admin/me", {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then((res) => {
+        if (active) setIsAdmin(res.ok);
+      })
+      .catch(() => {
+        if (active) setIsAdmin(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [session]);
 
   return (
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl border-b border-border/60">
@@ -85,6 +108,14 @@ export function Navbar({ cartCount, onCartOpen }: NavbarProps) {
                         {t("nav.myOrders")}
                       </Link>
                     </DropdownMenuItem>
+                    {isAdmin && (
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin" className="cursor-pointer">
+                          <Wrench className="h-4 w-4" />
+                          Admin
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => void signOut()} className="cursor-pointer">
                       <LogOut className="h-4 w-4" />

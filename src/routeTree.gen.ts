@@ -16,9 +16,15 @@ import { Route as GarantieRouteImport } from './routes/garantie'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as CgvRouteImport } from './routes/cgv'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe-webhook'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
+import { Route as ApiAdminMeRouteImport } from './routes/api/admin/me'
+import { Route as ApiAdminReviewsIndexRouteImport } from './routes/api/admin/reviews/index'
+import { Route as ApiAdminOrdersIndexRouteImport } from './routes/api/admin/orders/index'
+import { Route as ApiAdminReviewsActionRouteImport } from './routes/api/admin/reviews/action'
+import { Route as ApiAdminOrdersUpdateRouteImport } from './routes/api/admin/orders/update'
 
 const MesCommandesRoute = MesCommandesRouteImport.update({
   id: '/mes-commandes',
@@ -55,6 +61,11 @@ const CgvRoute = CgvRouteImport.update({
   path: '/cgv',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -70,9 +81,35 @@ const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
   path: '/api/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminMeRoute = ApiAdminMeRouteImport.update({
+  id: '/api/admin/me',
+  path: '/api/admin/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminReviewsIndexRoute = ApiAdminReviewsIndexRouteImport.update({
+  id: '/api/admin/reviews/',
+  path: '/api/admin/reviews/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminOrdersIndexRoute = ApiAdminOrdersIndexRouteImport.update({
+  id: '/api/admin/orders/',
+  path: '/api/admin/orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminReviewsActionRoute = ApiAdminReviewsActionRouteImport.update({
+  id: '/api/admin/reviews/action',
+  path: '/api/admin/reviews/action',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminOrdersUpdateRoute = ApiAdminOrdersUpdateRouteImport.update({
+  id: '/api/admin/orders/update',
+  path: '/api/admin/orders/update',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/cgv': typeof CgvRoute
   '/confidentialite': typeof ConfidentialiteRoute
   '/contact': typeof ContactRoute
@@ -82,9 +119,15 @@ export interface FileRoutesByFullPath {
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/me': typeof ApiAdminMeRoute
+  '/api/admin/orders/update': typeof ApiAdminOrdersUpdateRoute
+  '/api/admin/reviews/action': typeof ApiAdminReviewsActionRoute
+  '/api/admin/orders/': typeof ApiAdminOrdersIndexRoute
+  '/api/admin/reviews/': typeof ApiAdminReviewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/cgv': typeof CgvRoute
   '/confidentialite': typeof ConfidentialiteRoute
   '/contact': typeof ContactRoute
@@ -94,10 +137,16 @@ export interface FileRoutesByTo {
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/me': typeof ApiAdminMeRoute
+  '/api/admin/orders/update': typeof ApiAdminOrdersUpdateRoute
+  '/api/admin/reviews/action': typeof ApiAdminReviewsActionRoute
+  '/api/admin/orders': typeof ApiAdminOrdersIndexRoute
+  '/api/admin/reviews': typeof ApiAdminReviewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/cgv': typeof CgvRoute
   '/confidentialite': typeof ConfidentialiteRoute
   '/contact': typeof ContactRoute
@@ -107,11 +156,17 @@ export interface FileRoutesById {
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/me': typeof ApiAdminMeRoute
+  '/api/admin/orders/update': typeof ApiAdminOrdersUpdateRoute
+  '/api/admin/reviews/action': typeof ApiAdminReviewsActionRoute
+  '/api/admin/orders/': typeof ApiAdminOrdersIndexRoute
+  '/api/admin/reviews/': typeof ApiAdminReviewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/cgv'
     | '/confidentialite'
     | '/contact'
@@ -121,9 +176,15 @@ export interface FileRouteTypes {
     | '/mes-commandes'
     | '/api/checkout'
     | '/api/stripe-webhook'
+    | '/api/admin/me'
+    | '/api/admin/orders/update'
+    | '/api/admin/reviews/action'
+    | '/api/admin/orders/'
+    | '/api/admin/reviews/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/cgv'
     | '/confidentialite'
     | '/contact'
@@ -133,9 +194,15 @@ export interface FileRouteTypes {
     | '/mes-commandes'
     | '/api/checkout'
     | '/api/stripe-webhook'
+    | '/api/admin/me'
+    | '/api/admin/orders/update'
+    | '/api/admin/reviews/action'
+    | '/api/admin/orders'
+    | '/api/admin/reviews'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/cgv'
     | '/confidentialite'
     | '/contact'
@@ -145,10 +212,16 @@ export interface FileRouteTypes {
     | '/mes-commandes'
     | '/api/checkout'
     | '/api/stripe-webhook'
+    | '/api/admin/me'
+    | '/api/admin/orders/update'
+    | '/api/admin/reviews/action'
+    | '/api/admin/orders/'
+    | '/api/admin/reviews/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   CgvRoute: typeof CgvRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
   ContactRoute: typeof ContactRoute
@@ -158,6 +231,11 @@ export interface RootRouteChildren {
   MesCommandesRoute: typeof MesCommandesRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+  ApiAdminMeRoute: typeof ApiAdminMeRoute
+  ApiAdminOrdersUpdateRoute: typeof ApiAdminOrdersUpdateRoute
+  ApiAdminReviewsActionRoute: typeof ApiAdminReviewsActionRoute
+  ApiAdminOrdersIndexRoute: typeof ApiAdminOrdersIndexRoute
+  ApiAdminReviewsIndexRoute: typeof ApiAdminReviewsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -211,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CgvRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -232,11 +317,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/me': {
+      id: '/api/admin/me'
+      path: '/api/admin/me'
+      fullPath: '/api/admin/me'
+      preLoaderRoute: typeof ApiAdminMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/reviews/': {
+      id: '/api/admin/reviews/'
+      path: '/api/admin/reviews'
+      fullPath: '/api/admin/reviews/'
+      preLoaderRoute: typeof ApiAdminReviewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/orders/': {
+      id: '/api/admin/orders/'
+      path: '/api/admin/orders'
+      fullPath: '/api/admin/orders/'
+      preLoaderRoute: typeof ApiAdminOrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/reviews/action': {
+      id: '/api/admin/reviews/action'
+      path: '/api/admin/reviews/action'
+      fullPath: '/api/admin/reviews/action'
+      preLoaderRoute: typeof ApiAdminReviewsActionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/orders/update': {
+      id: '/api/admin/orders/update'
+      path: '/api/admin/orders/update'
+      fullPath: '/api/admin/orders/update'
+      preLoaderRoute: typeof ApiAdminOrdersUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   CgvRoute: CgvRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
   ContactRoute: ContactRoute,
@@ -246,6 +367,11 @@ const rootRouteChildren: RootRouteChildren = {
   MesCommandesRoute: MesCommandesRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+  ApiAdminMeRoute: ApiAdminMeRoute,
+  ApiAdminOrdersUpdateRoute: ApiAdminOrdersUpdateRoute,
+  ApiAdminReviewsActionRoute: ApiAdminReviewsActionRoute,
+  ApiAdminOrdersIndexRoute: ApiAdminOrdersIndexRoute,
+  ApiAdminReviewsIndexRoute: ApiAdminReviewsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
