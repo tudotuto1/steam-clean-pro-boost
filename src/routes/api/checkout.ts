@@ -6,7 +6,7 @@ import process from "node:process";
 // Creates a Stripe Checkout Session and returns { url }.
 // The Stripe secret key is read from STRIPE_SECRET_KEY and never leaves the server.
 
-const UNIT_AMOUNT = 8500; // 85,00 $ CAD, en cents
+const UNIT_AMOUNT = 100; // TEMPORAIRE test paiement réel 1,00 $ CAD — À REMETTRE À 8500
 const PRODUCT_NAME = "Nettoyeur Vapeur Haute Pression VaporPro";
 
 function getOrigin(request: Request): string {
