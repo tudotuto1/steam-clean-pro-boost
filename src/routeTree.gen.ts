@@ -19,6 +19,7 @@ import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe-webhook'
+import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout-session'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiAdminMeRouteImport } from './routes/api/admin/me'
 import { Route as ApiAdminReviewsIndexRouteImport } from './routes/api/admin/reviews/index'
@@ -76,6 +77,11 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   path: '/api/stripe-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCheckoutSessionRoute = ApiCheckoutSessionRouteImport.update({
+  id: '/api/checkout-session',
+  path: '/api/checkout-session',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
   id: '/api/checkout',
   path: '/api/checkout',
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/api/checkout-session': typeof ApiCheckoutSessionRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/api/admin/me': typeof ApiAdminMeRoute
   '/api/admin/orders/update': typeof ApiAdminOrdersUpdateRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/api/checkout-session': typeof ApiCheckoutSessionRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/api/admin/me': typeof ApiAdminMeRoute
   '/api/admin/orders/update': typeof ApiAdminOrdersUpdateRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/merci': typeof MerciRoute
   '/mes-commandes': typeof MesCommandesRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/api/checkout-session': typeof ApiCheckoutSessionRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/api/admin/me': typeof ApiAdminMeRoute
   '/api/admin/orders/update': typeof ApiAdminOrdersUpdateRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/mes-commandes'
     | '/api/checkout'
+    | '/api/checkout-session'
     | '/api/stripe-webhook'
     | '/api/admin/me'
     | '/api/admin/orders/update'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/mes-commandes'
     | '/api/checkout'
+    | '/api/checkout-session'
     | '/api/stripe-webhook'
     | '/api/admin/me'
     | '/api/admin/orders/update'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/mes-commandes'
     | '/api/checkout'
+    | '/api/checkout-session'
     | '/api/stripe-webhook'
     | '/api/admin/me'
     | '/api/admin/orders/update'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   MerciRoute: typeof MerciRoute
   MesCommandesRoute: typeof MesCommandesRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
+  ApiCheckoutSessionRoute: typeof ApiCheckoutSessionRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiAdminMeRoute: typeof ApiAdminMeRoute
   ApiAdminOrdersUpdateRoute: typeof ApiAdminOrdersUpdateRoute
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/checkout-session': {
+      id: '/api/checkout-session'
+      path: '/api/checkout-session'
+      fullPath: '/api/checkout-session'
+      preLoaderRoute: typeof ApiCheckoutSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/checkout': {
       id: '/api/checkout'
       path: '/api/checkout'
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   MerciRoute: MerciRoute,
   MesCommandesRoute: MesCommandesRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,
+  ApiCheckoutSessionRoute: ApiCheckoutSessionRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiAdminMeRoute: ApiAdminMeRoute,
   ApiAdminOrdersUpdateRoute: ApiAdminOrdersUpdateRoute,

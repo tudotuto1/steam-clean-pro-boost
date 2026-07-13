@@ -1,7 +1,67 @@
+import { useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Package, Truck, Star } from "lucide-react";
 
 import { useT } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
+import { track, CONTENT_ID } from "@/lib/pixel";
+
+// Fire the Meta Pixel Purchase event using the REAL paid amount, resolved
+// server-side from the Stripe session. Only fires once per session_id.
+function usePurchasePixel(sessionId: string | undefined) {
+  const { session } = useAuth();
+  useEffect(() => {
+    if (!sessionId || !session) return;
+    const key = `purchase_fired_${sessionId}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+    } catch {
+      // sessionStorage unavailable — proceed without the guard.
+    }
+
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/checkout-session?session_id=${encodeURIComponent(sessionId)}`,
+          { headers: { Authorization: `Bearer ${session.access_token}` } },
+        );
+        if (!res.ok || !active) return;
+        const data = (await res.json()) as {
+          amount_total?: number | null;
+          currency?: string | null;
+          quantity?: number | null;
+          payment_status?: string | null;
+        };
+        if (!active || data.payment_status !== "paid") return;
+
+        // Mark before firing so a refresh (or StrictMode) never double-counts.
+        try {
+          sessionStorage.setItem(key, "1");
+        } catch {
+          // ignore
+        }
+        track(
+          "Purchase",
+          {
+            content_ids: [CONTENT_ID],
+            content_type: "product",
+            value: (data.amount_total ?? 0) / 100,
+            currency: String(data.currency ?? "cad").toUpperCase(),
+            num_items: data.quantity ?? 1,
+          },
+          { eventID: sessionId },
+        );
+      } catch {
+        // On any failure, fire nothing (better no event than a wrong value).
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [sessionId, session]);
+}
 
 export const Route = createFileRoute("/merci")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -20,6 +80,7 @@ export const Route = createFileRoute("/merci")({
 function MerciPage() {
   const { session_id } = Route.useSearch();
   const t = useT();
+  usePurchasePixel(session_id);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-16">

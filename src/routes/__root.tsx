@@ -4,15 +4,20 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { LanguageProvider } from "../lib/i18n";
+import { META_PIXEL_ID, track } from "../lib/pixel";
+
+// Meta Pixel base code — init + first PageView. Injected inline in <head>.
+const metaPixelSnippet = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${META_PIXEL_ID}');fbq('track','PageView');`;
 
 function NotFoundComponent() {
   return (
@@ -88,8 +93,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "VaporPro — Nettoyeur Vapeur Haute Pression" },
       { name: "twitter:description", content: "Vapeur sèche à 132°C, coffret 9 accessoires, zéro chimie. $85 tout inclus, livraison Canada & USA en 5 à 8 jours." },
-      { property: "og:image", content: "https://steam-clean-pro-boost.vercel.app/og-image.jpg" },
-      { name: "twitter:image", content: "https://steam-clean-pro-boost.vercel.app/og-image.jpg" },
+      { property: "og:image", content: "https://vaporpr.com/og-image.jpg" },
+      { name: "twitter:image", content: "https://vaporpr.com/og-image.jpg" },
     ],
     links: [
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
@@ -103,6 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    headScripts: [{ children: metaPixelSnippet }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -117,6 +123,15 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
         {children}
         <Scripts />
       </body>
@@ -126,6 +141,18 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  // SPA navigations: refire PageView on each route change (the base snippet
+  // only counts the first page). Skip the initial render to avoid a double.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    track("PageView");
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

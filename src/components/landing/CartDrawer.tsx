@@ -3,6 +3,7 @@ import { X, Plus, Minus, Truck, Lock, Trash2, Package, Loader2 } from "lucide-re
 import mainImg from "@/assets/product-main.jpeg";
 import { useAuth } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
+import { track, CONTENT_ID, CURRENCY, PRICE } from "@/lib/pixel";
 
 interface Props {
   open: boolean;
@@ -37,6 +38,14 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
       openAuthDialog();
       return;
     }
+
+    // Meta Pixel InitiateCheckout — only for authenticated checkout starts.
+    track("InitiateCheckout", {
+      content_ids: [CONTENT_ID],
+      value: PRICE * quantity,
+      currency: CURRENCY,
+      num_items: quantity,
+    });
 
     setLoading(true);
     setError(null);

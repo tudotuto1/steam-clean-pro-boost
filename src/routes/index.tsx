@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { track, CONTENT_ID, CURRENCY, PRICE } from "@/lib/pixel";
 import { AnnouncementBar } from "@/components/landing/AnnouncementBar";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
@@ -28,9 +29,28 @@ function Index() {
   const [cartOpen, setCartOpen] = useState(false);
   const [quantity, setQuantity] = useState(0);
 
+  // Meta Pixel ViewContent — once on landing.
+  useEffect(() => {
+    track("ViewContent", {
+      content_ids: [CONTENT_ID],
+      content_type: "product",
+      content_name: "VaporPro",
+      value: PRICE,
+      currency: CURRENCY,
+    });
+  }, []);
+
   const addToCart = () => {
-    setQuantity((q) => Math.max(1, q + 1));
+    const next = Math.max(1, quantity + 1);
+    setQuantity(next);
     setCartOpen(true);
+    track("AddToCart", {
+      content_ids: [CONTENT_ID],
+      content_type: "product",
+      value: PRICE * next,
+      currency: CURRENCY,
+      contents: [{ id: CONTENT_ID, quantity: next }],
+    });
   };
 
   return (
