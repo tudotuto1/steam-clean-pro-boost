@@ -108,7 +108,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
-    headScripts: [{ children: metaPixelSnippet }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -121,6 +120,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="fr">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: metaPixelSnippet }} />
       </head>
       <body>
         <noscript>
