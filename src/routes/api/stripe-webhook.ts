@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import Stripe from "stripe";
 import process from "node:process";
 
+import { sendPurchase } from "@/lib/meta-capi.server";
+
 // Server route: POST /api/stripe-webhook
 // Records each successful Stripe payment into the `orders` table, linked to
 // the authenticated user. Mirrors the server-route style of checkout.ts.
@@ -117,17 +119,33 @@ export const Route = createFileRoute("/api/stripe-webhook")({
           auth: { persistSession: false, autoRefreshToken: false },
         });
 
-        const { error } = await supabase
+        const { data: inserted, error } = await supabase
           .from("orders")
           .upsert(record, {
             onConflict: "stripe_session_id",
             ignoreDuplicates: true,
-          });
+          })
+          .select();
 
         if (error) {
           // 500 → Stripe réessaiera la livraison.
           console.error("Failed to upsert order:", error.message);
           return new Response("db error", { status: 500 });
+        }
+
+        // API Conversions Meta : envoyer Purchase UNIQUEMENT si une NOUVELLE
+        // ligne a été insérée (ignoreDuplicates → tableau vide sur un renvoi
+        // Stripe), pour ne pas doubler. Le tracking ne doit JAMAIS affecter
+        // la réponse 200 : l'enregistrement de la commande est prioritaire.
+        if (inserted && inserted.length > 0) {
+          try {
+            await sendPurchase({ session: s, quantity });
+          } catch (err) {
+            console.error(
+              "Meta CAPI Purchase threw:",
+              err instanceof Error ? err.message : err,
+            );
+          }
         }
 
         return new Response("ok", { status: 200 });

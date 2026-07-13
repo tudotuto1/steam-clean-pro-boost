@@ -47,6 +47,16 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
       num_items: quantity,
     });
 
+    // Capture Meta match signals now (they are lost after the redirect).
+    const readCookie = (name: string) =>
+      document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"))?.[1] ?? "";
+    const fbp = readCookie("_fbp");
+    let fbc = readCookie("_fbc");
+    if (!fbc) {
+      const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+      if (fbclid) fbc = `fb.1.${Date.now()}.${fbclid}`;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -56,7 +66,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ quantity }),
+        body: JSON.stringify({ quantity, fbp, fbc }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.url) {

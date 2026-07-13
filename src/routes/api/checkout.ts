@@ -73,17 +73,31 @@ export const Route = createFileRoute("/api/checkout")({
         const userId = userData.user.id;
         const userEmail = userData.user.email;
 
-        // Lis la quantité depuis le client.
+        // Lis la quantité + les signaux de correspondance Meta depuis le client.
         let quantity = 0;
+        let fbp = "";
+        let fbc = "";
         try {
-          const body = (await request.json()) as { quantity?: unknown };
+          const body = (await request.json()) as {
+            quantity?: unknown;
+            fbp?: unknown;
+            fbc?: unknown;
+          };
           quantity = Math.floor(Number(body?.quantity));
+          if (typeof body?.fbp === "string") fbp = body.fbp;
+          if (typeof body?.fbc === "string") fbc = body.fbc;
         } catch {
           // body invalide
         }
         if (!Number.isInteger(quantity) || quantity < 1) {
           return Response.json({ error: "Quantité invalide." }, { status: 400 });
         }
+
+        // Signaux serveur pour l'API Conversions Meta.
+        const clientUa = request.headers.get("user-agent") ?? "";
+        const clientIp = (request.headers.get("x-forwarded-for") ?? "")
+          .split(",")[0]
+          .trim();
 
         const origin = getOrigin(request);
 
@@ -116,6 +130,14 @@ export const Route = createFileRoute("/api/checkout")({
         if (userEmail) {
           params.set("customer_email", userEmail);
         }
+
+        // Signaux de correspondance Meta stockés dans la metadata Stripe (le
+        // webhook les relira pour l'API Conversions). Tronqués à 500 car.
+        const cap = (v: string) => v.slice(0, 500);
+        if (fbp) params.set("metadata[fbp]", cap(fbp));
+        if (fbc) params.set("metadata[fbc]", cap(fbc));
+        if (clientUa) params.set("metadata[client_ua]", cap(clientUa));
+        if (clientIp) params.set("metadata[client_ip]", cap(clientIp));
 
         const stripeRes = await fetch(
           "https://api.stripe.com/v1/checkout/sessions",
