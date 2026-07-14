@@ -42,6 +42,8 @@ export const en: Dict = {
   "gallery.alt.uses": `Compatible surfaces: windows, furniture, kitchen, bathroom, tires, textiles`,
   "gallery.alt.features": `Technical specifications of the device`,
   "gallery.viewImage": `View image`,
+  "hero.gallery.videoThumbAlt": `Watch the demo video`,
+  "hero.gallery.videoLabel": `Sped-up demo`,
 
   // Features (#features)
   "features.kicker": `Why VaporPro`,

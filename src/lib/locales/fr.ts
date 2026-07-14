@@ -42,6 +42,8 @@ export const fr = {
   "gallery.alt.uses": `Surfaces compatibles : vitres, meubles, cuisine, sanitaires, pneus, textiles`,
   "gallery.alt.features": `Caractéristiques techniques de l'appareil`,
   "gallery.viewImage": `Voir image`,
+  "hero.gallery.videoThumbAlt": `Voir la vidéo de démonstration`,
+  "hero.gallery.videoLabel": `Démo en accéléré`,
 
   // Features (#features)
   "features.kicker": `Pourquoi VaporPro`,
