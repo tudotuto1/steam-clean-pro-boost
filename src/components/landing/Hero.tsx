@@ -58,7 +58,7 @@ export function Hero({ onAddToCart }: HeroProps) {
           </div>
 
           <div className="flex items-baseline gap-3 pt-1">
-            <span className="text-4xl font-extrabold font-display text-primary-deep">$85</span>
+            <span className="text-4xl font-extrabold font-display text-primary-deep">$74.99</span>
             <span className="bg-success/10 text-success font-bold text-xs px-2 py-1 rounded">{t("hero.shippingIncluded")}</span>
           </div>
           <p className="text-xs text-muted-foreground -mt-2">{t("hero.allIncluded")}</p>

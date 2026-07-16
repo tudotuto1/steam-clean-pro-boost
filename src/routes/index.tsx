@@ -17,9 +17,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "VaporPro — Nettoyeur Vapeur Haute Pression | Canada & USA" },
-      { name: "description", content: "Vapeur sèche à 132°C, coffret 9 accessoires, sans produits chimiques. $85 tout inclus, livraison Canada & USA en 5 à 8 jours via nos fournisseurs partenaires." },
+      { name: "description", content: "Vapeur sèche à 132°C, coffret 9 accessoires, sans produits chimiques. $74.99 tout inclus, livraison Canada & USA en 5 à 8 jours via nos fournisseurs partenaires." },
       { property: "og:title", content: "VaporPro — Nettoyeur Vapeur Haute Pression" },
-      { property: "og:description", content: "Dégraisse et assainit à 132°C, zéro chimie. $85 livraison incluse au Canada & USA en 5-8 jours." },
+      { property: "og:description", content: "Dégraisse et assainit à 132°C, zéro chimie. $74.99 livraison incluse au Canada & USA en 5-8 jours." },
     ],
   }),
   component: Index,

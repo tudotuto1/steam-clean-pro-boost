@@ -28,7 +28,7 @@ export function MobileStickyCTA({ onBuy }: Props) {
         <div className="flex-1 min-w-0">
           <div className="text-xs text-muted-foreground line-clamp-1">{t("mobileCta.product")}</div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-base text-primary-deep">$85</span>
+            <span className="font-bold text-base text-primary-deep">$74.99</span>
             <span className="text-[10px] text-success font-semibold">{t("mobileCta.shippingIncluded")}</span>
           </div>
         </div>

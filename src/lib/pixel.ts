@@ -2,7 +2,7 @@
 export const META_PIXEL_ID = "4360012974213226";
 export const CONTENT_ID = "vaporpro-steam-cleaner";
 export const CURRENCY = "CAD";
-export const PRICE = 85;
+export const PRICE = 74.99;
 
 type FbqParams = Record<string, unknown>;
 interface FbqOptions {

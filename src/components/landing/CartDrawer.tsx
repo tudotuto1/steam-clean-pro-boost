@@ -12,7 +12,7 @@ interface Props {
   setQuantity: (n: number) => void;
 }
 
-const UNIT_PRICE = 85;
+const UNIT_PRICE = 74.99;
 
 export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
   const [loading, setLoading] = useState(false);
@@ -121,7 +121,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold text-sm leading-tight">{t("cart.productName")}</h4>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="font-bold text-primary-deep">${UNIT_PRICE}</span>
+                  <span className="font-bold text-primary-deep">${UNIT_PRICE.toFixed(2)}</span>
                   <span className="text-[10px] text-success font-semibold">{t("cart.allIncluded")}</span>
                 </div>
                 <div className="flex items-center justify-between mt-3">
@@ -150,7 +150,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
         <footer className="border-t border-border p-5 space-y-3 bg-card">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("cart.subtotal")}</span>
-            <span className="font-semibold">${subtotal}</span>
+            <span className="font-semibold">${subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>{t("cart.shipping")}</span>
@@ -158,7 +158,7 @@ export function CartDrawer({ open, onClose, quantity, setQuantity }: Props) {
           </div>
           <div className="flex justify-between text-base font-bold">
             <span>{t("cart.total")}</span>
-            <span className="text-primary-deep">${subtotal}</span>
+            <span className="text-primary-deep">${subtotal.toFixed(2)}</span>
           </div>
           {error && (
             <p className="text-[11px] text-center text-destructive" role="alert">

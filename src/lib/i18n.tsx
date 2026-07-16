@@ -100,7 +100,7 @@ export function formatDate(iso: string, lang: Lang): string {
 }
 
 /**
- * Format a cents amount: "85,00 $ CAD" in FR, "$85.00 CAD" in EN.
+ * Format a cents amount: "74,99 $ CAD" in FR, "$74.99 CAD" in EN.
  */
 export function formatAmount(
   cents: number | null,
